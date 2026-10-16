@@ -12,7 +12,7 @@ This plugin gives your agent three things:
 - **Graphon skills.** Instructions that teach the agent how to build app storage
   and search on Graphon, move data in, and run day-to-day storage work.
 
-Version 1.0.0. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 1.1.0. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 

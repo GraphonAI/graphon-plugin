@@ -1,6 +1,6 @@
 {
   "name": "graphon",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Object storage your coding agent can set up, fill, and wire into your app.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

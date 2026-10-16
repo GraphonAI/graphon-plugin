@@ -1,6 +1,6 @@
 ---
 name: graphon-migrate
-description: Use when the user asks to copy, upload, move, sync, import, migrate, or back up a folder, a directory, or many files into a Graphon bucket, or to bring data over from S3, R2, GCS, Azure Blob, MinIO, or another storage provider. Covers the inventory, the mapping plan, the bulk copy, and the checksum check.
+description: Use when the user asks to copy, upload, move, sync, import, migrate, or back up a folder, a directory, or many files into a Graphon bucket, or to bring data over from S3, R2, GCS, Azure Blob, MinIO, or another storage provider. Covers the inventory, the mapping plan, the bulk copy with graphon objects sync, and the check.
 license: Apache-2.0
 compatibility: all
 metadata:
@@ -69,22 +69,24 @@ Count the objects and the bytes before you move anything. Report both.
 # A local folder
 find ./data -type f | wc -l
 du -sh ./data
-
-# An S3-compatible source
-aws s3 ls s3://bucket --recursive --summarize | tail -3
 ```
 
-Note anything that needs a decision: objects over 5 GiB, keys with characters
-that need encoding, zero-byte objects, and existing versions.
+For a bucket at another provider, the dry run in step 4 is the inventory. Its
+first line counts the objects and bytes under the prefix, for example
+`Found 120 objects (3.4 GiB) in s3://old-bucket/reports/.` Ask the user now for
+the provider, the bucket, and the prefix.
+
+Note anything that needs a decision: objects over 5 GiB, zero-byte objects,
+and existing versions. Sync copies only the current version of each object.
 
 ## 2. Show a mapping plan and wait
 
 Show the user a short table before you copy. Do not start until they agree.
 
-| From | To |
-| --- | --- |
-| `./data/invoices/*.pdf` | `acme-archive/invoices/` |
-| `s3://old-bucket/users/` | `acme-uploads/users/` |
+| From                     | To                       |
+| ------------------------ | ------------------------ |
+| `./data/invoices/*.pdf`  | `acme-archive/invoices/` |
+| `s3://old-bucket/users/` | `acme-uploads/users/`    |
 
 State in one line: the object count, the total bytes, the target bucket, and
 whether anything in the target will be overwritten.
@@ -96,71 +98,76 @@ source has versions the user wants to keep.
 
 ## 4. Copy
 
-**From a local folder**, use the CLI. It already holds the login and the
-workspace. A second run skips every file whose object has the same size and is
-newer, so it restarts safely.
+Use `graphon objects sync` for every source. It already holds the login and
+the workspace. It skips each object whose Graphon copy has the same size and
+is newer, so a second run copies only what is new or changed, and a stopped
+run restarts safely. It never deletes. Every byte passes through this machine,
+so run it where the network is fast.
+
+**From a local folder:**
 
 ```bash
 graphon objects sync <bucket> --dir ./data --prefix <prefix> --dry-run
 graphon objects sync <bucket> --dir ./data --prefix <prefix>
 ```
 
-Run `--dry-run` first and show the user what it would upload.
+**From S3, R2, GCS, or MinIO**, name the source with
+`--from s3://<source-bucket>/<prefix>`. Sync reads the source keys only from
+these variables:
 
-**From S3, GCS, Azure, or R2**, use `rclone`. It restarts where it stopped.
-Every byte passes through this machine, so run it where the network is fast.
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: always.
+- `AWS_SESSION_TOKEN`: only for temporary keys.
+- `AWS_REGION`: the region of an AWS bucket. The default is `us-east-1`. When
+  it is wrong, sync names the right one.
 
-Make one key for the copy, in a git-ignored file. When
-`.env.graphon-migration` already exists, use it and do not make another key:
-
-```bash
-test -f .env.graphon-migration || graphon api-keys create --name "migration" --role editor --write-env .env.graphon-migration
-```
-
-Each shell command starts without the variables of the one before. So start
-every shell command that names `graphon:` with these setup lines, in that same
-command. They load the key and define the `graphon:` remote through
-environment variables, so the key never enters a config file or the
-transcript:
-
-```bash
-set -a; . ./.env.graphon-migration; set +a
-export RCLONE_CONFIG_GRAPHON_TYPE=s3
-export RCLONE_CONFIG_GRAPHON_PROVIDER=Other
-export RCLONE_CONFIG_GRAPHON_ENDPOINT="https://$(graphon workspaces get).storage.beta.graphon.sh"
-export RCLONE_CONFIG_GRAPHON_REGION=us-east-1
-export RCLONE_CONFIG_GRAPHON_FORCE_PATH_STYLE=true
-export RCLONE_CONFIG_GRAPHON_ACCESS_KEY_ID="$(printf %s "$GRAPHON_API_KEY" | cut -d_ -f2- | cut -d. -f1)"
-export RCLONE_CONFIG_GRAPHON_SECRET_ACCESS_KEY="$GRAPHON_API_KEY"
-```
-
-Then, in the same command as the setup lines:
+Never put a source key in a flag, and never print one. Each shell command
+starts without the variables of the one before. When these variables are not
+set in your shell, ask the user to put the source keys in a
+`.env.graphon-source` file, and check that git ignores it with
+`git check-ignore -q .env.graphon-source`. A user who signs in to AWS with a
+profile or SSO can write that file with
+`aws configure export-credentials --profile <name> --format env > .env.graphon-source`.
+Then start each sync command with the line that loads the file:
 
 ```bash
-rclone copy source:old-bucket graphon:<bucket>/<prefix> --progress --checksum
+set -a; . ./.env.graphon-source; set +a
+graphon objects sync <bucket> --from s3://<source-bucket>/<prefix> --prefix <prefix> --dry-run
 ```
 
-Use `copy`, never `sync`. `rclone sync` deletes from the target to match the
-source, and a wrong path then destroys data. When the migration ends, tell the
-user the key name `migration`, so they can revoke it.
+```bash
+set -a; . ./.env.graphon-source; set +a
+graphon objects sync <bucket> --from s3://<source-bucket>/<prefix> --prefix <prefix>
+```
+
+Add the source's endpoint:
+
+| Source                      | Add                                                              |
+| --------------------------- | ---------------------------------------------------------------- |
+| AWS S3                      | nothing                                                          |
+| Cloudflare R2               | `--from-endpoint https://<account id>.r2.cloudflarestorage.com`  |
+| Google Cloud Storage        | `--from-endpoint https://storage.googleapis.com`, with HMAC keys |
+| MinIO or another S3 service | `--from-endpoint <its URL>`                                      |
+
+Run `--dry-run` first. Show the user the "Found" line, the count it would
+upload, and the keys. Wait for a yes before the real run.
+
+**From Azure Blob Storage**, which has no S3 API: copy the container to a
+local folder first, for example with
+`az storage blob download-batch --destination ./data --source <container> --account-name <account>`.
+Then sync the folder with `--dir`.
+
+When the migration ends, tell the user that `.env.graphon-source` holds the
+source keys, so they can delete it.
 
 ## 5. Check
 
-Check all three. A count alone does not prove the bytes arrived. Run these in
-one command that starts with the setup lines from step 4.
+Run the same sync again with `--dry-run`. It must report
+`Would upload 0, skipped <N>, failed 0.`, where `<N>` is the count from step 1:
+the file count, or the number on the "Found" line. Sync skips only an object
+whose Graphon copy has the same size, so this proves every object arrived with
+its size. Each upload also sends the SHA-256 of every part it read, and
+Graphon refuses a part whose bytes do not match.
 
-```bash
-# Counts
-rclone size source:old-bucket
-rclone size graphon:<bucket>/<prefix>
-
-# Per-object checksums
-rclone check source:old-bucket graphon:<bucket>/<prefix> --checksum
-```
-
-For a local source, run the same `graphon objects sync` with `--dry-run`
-again. It must report `Would upload 0`. Then compare the file count with
-`graphon objects list <bucket> --prefix <prefix>`.
 Report any mismatch by key. Do not round up or summarize a failure as success.
 
 When the target bucket has indexing enabled, check the indexing too:
@@ -187,8 +194,11 @@ Graphon.
 
 ## If the copy stops
 
-A copy can stop partway. `graphon objects sync` reports each file that
-failed and exits `1`. Report the failed keys. Both `graphon objects sync` and
-`rclone copy` restart from where they stopped, so the fix is to run the same
-command again. For `rclone copy`, start it with the setup lines from step 4
-again. Do not make another key.
+A copy can stop partway. `graphon objects sync` prints `Failed <key>: <reason>`
+for each object that failed, and exits `1`. Report the failed keys, then run
+the same command again. It copies only what is left. For a provider source,
+start it with the line that loads `.env.graphon-source` again.
+
+When sync says that Graphon or the source refused the request, it stopped at
+the first object, because every other object would fail the same way. Report
+that line to the user. The fix is a key with the right access, not a rerun.
