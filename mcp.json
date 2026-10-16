@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "graphon": {
+      "type": "streamable-http",
+      "url": "https://api.beta.graphon.ai/mcp",
+      "headers": {
+        "x-graphon-surface": "plugin"
+      }
+    }
+  }
+}

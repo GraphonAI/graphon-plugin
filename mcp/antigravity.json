@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "graphon": {
+      "serverUrl": "https://api.beta.graphon.ai/mcp",
+      "headers": {
+        "x-graphon-surface": "plugin"
+      }
+    }
+  }
+}

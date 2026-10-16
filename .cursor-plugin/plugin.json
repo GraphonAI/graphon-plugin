@@ -1,0 +1,21 @@
+{
+  "name": "graphon",
+  "displayName": "Graphon",
+  "description": "Object storage your coding agent can set up, fill, and wire into your app.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Graphon"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "storage",
+    "object storage",
+    "s3",
+    "uploads",
+    "files",
+    "buckets"
+  ],
+  "category": "Developer Tools",
+  "skills": "./skills/",
+  "mcpServers": "./mcp/cursor.json"
+}

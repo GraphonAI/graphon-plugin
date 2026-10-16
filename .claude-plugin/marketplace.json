@@ -1,0 +1,16 @@
+{
+  "name": "graphon",
+  "owner": {
+    "name": "Graphon",
+    "url": "https://graphon.ai"
+  },
+  "description": "The official Graphon plugin: object storage for your coding agent.",
+  "plugins": [
+    {
+      "name": "graphon",
+      "source": "./",
+      "description": "Object storage your coding agent can set up, fill, and wire into your app.",
+      "version": "1.0.0"
+    }
+  ]
+}

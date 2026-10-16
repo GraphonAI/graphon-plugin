@@ -1,0 +1,39 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "graphon",
+  "version": "1.0.0",
+  "description": "Object storage your coding agent can set up, fill, and wire into your app.",
+  "author": {
+    "name": "Graphon",
+    "url": "https://graphon.ai"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "storage",
+    "object storage",
+    "s3",
+    "uploads",
+    "files",
+    "buckets"
+  ],
+  "homepage": "https://docs.beta.graphon.ai/plugin",
+  "repository": "https://github.com/GraphonAI/graphon-plugin",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Graphon",
+        "shortDescription": "Storage your agent can use",
+        "longDescription": "Graphon is object storage with an S3-compatible API and a JSON API.\nThis plugin gives your coding agent three things: the Graphon MCP server,\nthe Graphon CLI, and skills that teach the agent how to use them.\n\nWith the plugin installed, you can ask your agent to create a bucket,\nupload files, add file uploads to your app, or move an existing bucket\ninto Graphon. The agent picks the right interface for each job: MCP tools\nfor control-plane work, the CLI for local files and secrets, and an S3\nSDK for the code it writes.\n\nThe agent signs in with OAuth on its first call. The plugin stores no key.\nWhen your app needs a key, the agent puts it where your project keeps\nits secrets, so the key never appears in the transcript.",
+        "developerName": "Graphon",
+        "category": "Developer Tools",
+        "defaultPrompt": [
+          "Set up Graphon storage in this project.",
+          "Move this app's file uploads to Graphon.",
+          "Copy my S3 bucket into Graphon and check every file."
+        ],
+        "brandColor": "#1F6FEB",
+        "websiteURL": "https://docs.beta.graphon.ai/plugin"
+      }
+    }
+  }
+}
