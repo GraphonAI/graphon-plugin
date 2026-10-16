@@ -8,6 +8,19 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 1.2.0
+
+- Two new skills for retrieval: `graphon-search` runs search, answers, chat
+  turns, and research over a bucket. `graphon-app-search` writes a search
+  endpoint, an answer endpoint with citations, a chat loop, and a research
+  stream into the user's app, with recipes for Next.js, Express, and FastAPI.
+- The `graphon` skill routes to both, and keeps one short table of the three
+  operations.
+- The skills name the new CLI commands `graphon search`, `graphon ask`,
+  `graphon chat`, `graphon research start`, and `graphon research get`.
+- `graphon-troubleshoot` covers a research run that expired, and the indexing
+  message that the new commands print.
+
 ## 1.1.0
 
 - `graphon-migrate` copies from S3, R2, GCS, and MinIO with

@@ -1,8 +1,8 @@
 {
   "name": "graphon",
   "displayName": "Graphon",
-  "description": "Object storage your coding agent can set up, fill, and wire into your app.",
-  "version": "1.1.0",
+  "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
+  "version": "1.2.0",
   "author": {
     "name": "Graphon"
   },
@@ -13,7 +13,11 @@
     "s3",
     "uploads",
     "files",
-    "buckets"
+    "buckets",
+    "search",
+    "rag",
+    "retrieval",
+    "citations"
   ],
   "category": "Developer Tools",
   "skills": "./skills/",

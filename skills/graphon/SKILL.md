@@ -108,38 +108,23 @@ anywhere else: the CLI already keeps it.
 
 ## Search, answer, and research
 
-A bucket with indexing enabled can be searched. Use the MCP tools to try a
-question. Use the Graphon API from app code: send the key as a Bearer token to
+A bucket with indexing enabled can be read three ways. Use the MCP tools, or
+the CLI, or the Graphon API from app code: send the key as a Bearer token to
 `https://api.beta.graphon.ai`. A viewer key is enough.
 
 | Job | MCP tool | API route, under `/v1/workspaces/<workspace id>` |
 | --- | --- | --- |
 | Rank objects or passages | `search_objects` | `POST /search` |
 | Answer with citations | `answer_question` | `POST /answer` |
-| Deep research in the background | `start_research`, `get_research` | `POST /research`, `GET /research/<research id>` |
+| Deep research | `start_research`, `get_research` | `POST /research`, `GET /research/<research id>` |
 
-A file is searchable only after it finishes indexing. Before the first search,
-check the bucket:
+A file answers only after it finishes indexing. Check the bucket first:
 
 ```bash
 graphon buckets index-status <bucket> --watch
-graphon buckets index-status <bucket> --filter failed
 ```
 
-The MCP tool is `get_bucket_index_status`. It returns counts by state and the
-versions still in the queue. Filter `failed` or `unsupported` to find the files
-that search will never return, and tell the user. While a new version of a
-file indexes, its older version stays searchable.
-
-For app code that must know when a file becomes searchable, register a
-webhook with `create_webhook` for `object.indexed` and
-`object.indexing_failed`. Register only a URL the user gave you.
-
-Read the reference before you write app code:
-
-- `https://docs.beta.graphon.ai/api/search/search-objects.md`
-- `https://docs.beta.graphon.ai/api/answer/answer-question.md`
-- `https://docs.beta.graphon.ai/api/research/start-research.md`
+Load `graphon-search` before you run any of them.
 
 ## Load the next skill
 
@@ -147,7 +132,9 @@ Read the reference before you write app code:
 | --- | --- |
 | Set up Graphon in this project, or no login or key was found | `graphon-setup` |
 | Create, change, inspect, share, or delete buckets or objects | `graphon-storage` |
+| Search, ask a question about, chat with, or research stored files | `graphon-search` |
 | Add uploads, downloads, file serving, or blob storage to app code | `graphon-app-storage` |
+| Add search, answers, chat, or research to app code | `graphon-app-search` |
 | Move, copy, import, or back up data into Graphon | `graphon-migrate` |
 | A Graphon call failed | `graphon-troubleshoot` |
 

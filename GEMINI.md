@@ -1,6 +1,6 @@
 # Graphon
 
-Object storage your coding agent can set up, fill, and wire into your app.
+Object storage with search your coding agent can set up, fill, query, and wire into your app.
 
 Activate the `graphon` skill before any storage work. It names the interface to
 use and how to find the Graphon CLI.

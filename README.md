@@ -1,6 +1,7 @@
 # Graphon plugin for coding agents
 
-Object storage your coding agent can set up, fill, and wire into your app.
+Object storage with search your coding agent can set up, fill, query, and wire
+into your app.
 
 This plugin gives your agent three things:
 
@@ -10,9 +11,10 @@ This plugin gives your agent three things:
   API keys where your app keeps its secrets, so a key never reaches the
   transcript.
 - **Graphon skills.** Instructions that teach the agent how to build app storage
-  and search on Graphon, move data in, and run day-to-day storage work.
+  and search on Graphon, search and question your files, move data in, and run
+  day-to-day storage work.
 
-Version 1.1.0. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 1.2.0. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 
@@ -52,11 +54,14 @@ Ask it in your own words:
 
 - "Set up Graphon storage in this project."
 - "Move this app's file uploads to Graphon."
+- "Add search over my documents to this app."
+- "Ask my Graphon bucket why checkout stalled last week."
 - "Copy my S3 bucket into Graphon and check every file."
 
 The skills teach the agent which interface fits each job. It uses MCP tools for
-buckets, keys, and members. It uses the CLI for local files and for secrets. It
-writes an S3 SDK call into your app for anything your app does at run time.
+buckets, keys, members, and questions. It uses the CLI for local files and for
+secrets. It writes an SDK call into your app for anything your app does at run
+time.
 
 ## Keys and safety
 

@@ -87,6 +87,8 @@ with the same inputs, and do not widen a role to make an error go away.
 | `bucket_not_ready` | The bucket is still being created | Call `get_bucket` until its phase is `active` |
 | `bucket_offline` | An editor took the bucket offline | An editor must bring it online first |
 | `feature_not_in_plan` | Research and image questions are premium | Tell the user which feature the workspace plan lacks |
+| `not_found` from `get_research` or `graphon research get` | The run ended more than one hour ago | A finished run is readable for one hour only. Start the research again. |
+| `graphon search`, `graphon ask`, or `graphon research start` exits 1 with an indexing message | The bucket cannot answer yet | The message names the next command. Run it, then ask again. |
 
 A search with a warning returns no results, and it is not an error:
 
