@@ -8,6 +8,12 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 1.2.1
+
+- The README says that the CLI searches a bucket, answers a question from it,
+  holds a chat, and runs research. It named only files, folders, and keys
+  before. No skill changed, so an agent behaves as it did in 1.2.0.
+
 ## 1.2.0
 
 - Two new skills for retrieval: `graphon-search` runs search, answers, chat

@@ -9,12 +9,13 @@ This plugin gives your agent three things:
   buckets, objects, and search. Your agent signs in with OAuth on its first call.
 - **The Graphon CLI.** The agent uploads local files, syncs folders, and puts
   API keys where your app keeps its secrets, so a key never reaches the
-  transcript.
+  transcript. It also searches a bucket, answers a question from it, holds a
+  chat about it, and runs research.
 - **Graphon skills.** Instructions that teach the agent how to build app storage
   and search on Graphon, search and question your files, move data in, and run
   day-to-day storage work.
 
-Version 1.2.0. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 1.2.1. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 
@@ -47,6 +48,22 @@ npx skills add GraphonAI/graphon-plugin
 was recorded. **Should work** means the manifest ships and validates, but
 nobody has loaded it yet. **Blocked upstream** means the agent itself
 cannot connect today, for a reason outside this plugin.
+
+## Search, answers, and research
+
+A bucket with indexing enabled can be read three ways, from the MCP tools, the
+CLI, or your own code:
+
+| Job | CLI |
+| --- | --- |
+| Rank the objects that match a text | `graphon search <bucket> "<text>"` |
+| One answer with a citation for each source | `graphon ask <bucket> "<question>"` |
+| A chat, where a follow-up can say "it" | `graphon chat <bucket>` |
+| A deep run that works on its own | `graphon research start <bucket> "<question>" --watch` |
+
+Indexing is fixed when a bucket is created, and an object answers only after it
+finishes indexing. `graphon buckets index-status <bucket> --watch` shows how far
+that has come. The skills tell the agent to check this before its first search.
 
 ## What your agent can do
 
