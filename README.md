@@ -15,7 +15,7 @@ This plugin gives your agent three things:
   and search on Graphon, search and question your files, move data in, and run
   day-to-day storage work.
 
-Version 1.2.1. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 1.3.0. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 
@@ -49,7 +49,7 @@ was recorded. **Should work** means the manifest ships and validates, but
 nobody has loaded it yet. **Blocked upstream** means the agent itself
 cannot connect today, for a reason outside this plugin.
 
-## Search, answers, and research
+## Search, ask, chat and research
 
 A bucket with indexing enabled can be read three ways, from the MCP tools, the
 CLI, or your own code:

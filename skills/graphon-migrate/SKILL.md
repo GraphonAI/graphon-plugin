@@ -20,6 +20,9 @@ These rules hold here, whether or not the `graphon` skill loaded:
 - Use the lowest role that does the job: `viewer`, then `editor`, then `admin`.
 - Do not delete a bucket, an object, or source data unless the user asked for
   that exact delete in this session.
+- When more than one Graphon MCP server is signed in, ask the user which one
+  to use before the first write. The environment is in the tool name:
+  `graphon` is production, and `graphon-qa` is a test environment.
 
 The `graphon` skill explains what Graphon is, which interface to use, and how
 to find the CLI. Load it with the Skill tool, not by reading its file.
@@ -40,9 +43,11 @@ in seconds once they know what is wrong.
 | Five commands have run with no progress | "I am not making progress on this. Here is what I tried and what each command returned: `<list>`." |
 
 The fourth row has one extra rule, because the mistake is easy to make and
-costly. **Do not finish the job with the CLI instead.** The CLI can hold a
+costly. **Do not finish the job another way.** Do not use the CLI, and do not
+use a second Graphon MCP server that is signed in. Either one can hold a
 different account and a different environment, so the work would land
-somewhere the user does not expect, and they would not be told.
+somewhere the user does not expect, and they would not be told. A signed-in
+QA server is not a substitute for a production server that is not signed in.
 
 Never do any of these, in any Graphon skill. When one of them is the only way
 forward, that is a stop: say so and end your turn.

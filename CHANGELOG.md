@@ -8,6 +8,21 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 1.3.0
+
+- The plugin and the MCP server now name their environment. A non-production
+  build installs under its own plugin name and its own MCP server key, so two
+  installs can no longer shadow each other, and the tool names in a session
+  show which environment a call reached.
+- A non-production server states that it is a test environment when an agent
+  connects, and again on the result of any call that writes. A production
+  server adds nothing to either.
+- When more than one Graphon server is signed in, an agent now asks which one
+  to use before its first write. A single signed-in server behaves as before.
+- Production installs keep the name `graphon` and need no action. An install
+  of a non-production build made before this version sits under the old
+  shared name. Remove it and add it again.
+
 ## 1.2.1
 
 - The README says that the CLI searches a bucket, answers a question from it,
