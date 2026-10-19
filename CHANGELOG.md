@@ -8,6 +8,12 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 1.3.1
+
+- The search skill now says which research mode answers a question that asks
+  for every match. A question that starts with "find all", "list every", or
+  one of the other openings wants `recall`.
+
 ## 1.3.0
 
 - The plugin and the MCP server now name their environment. A non-production

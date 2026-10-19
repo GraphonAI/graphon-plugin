@@ -152,6 +152,10 @@ run it for a user, because it reads a terminal and a pipe the same way.
 - `recall` keeps looking until it finds nothing new. Use it for "every time
   …" questions, where a missed match is the failure.
 
+A question that starts with "find all", "find every", "list all", "list
+every", "show all", "show every", "every time", "how many", or "which ones"
+asks for every match. Use `recall` for it.
+
 The tool follows the run and returns it when it ends. Its first progress
 notification names the research id. If your call ends before the run does,
 read the run with `get_research`. A finished run stays readable for one hour,
