@@ -92,7 +92,7 @@ with the same inputs, and do not widen a role to make an error go away.
 | `bucket_not_ready` | The bucket is still being created | Call `get_bucket` until its phase is `active` |
 | `bucket_offline` | An editor took the bucket offline | An editor must bring it online first |
 | `feature_not_in_plan` | Research and image questions are premium | Tell the user which feature the workspace plan lacks |
-| `not_found` from `get_run` or `graphon run get` | The run is past its `expiresAt` | A finished run is readable until `expiresAt`. Start the run again. |
+| `not_found` from `get_research` or `graphon research get` | The run is past its `expiresAt` | A finished run is readable until `expiresAt`. Start the run again. |
 | `graphon search`, `graphon ask`, or `graphon research start` exits 1 with an indexing message | The bucket cannot answer yet | The message names the next command. Run it, then ask again. |
 
 A search with a warning returns no results, and it is not an error:
@@ -147,5 +147,6 @@ of several.
 ## If none of this fits
 
 Collect the exact command, the exact error, `graphon doctor` output, and the
-request id when the error carries one. Give those to the user. Do not guess at
+request id. Every Graphon Storage error carries one, and the CLI prints it at
+the end of the error message. Give those to the user. Do not guess at
 a cause, and do not change the user's bucket settings to test a theory.

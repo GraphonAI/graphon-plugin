@@ -147,7 +147,7 @@ When `answer` is null, show the warning, not an empty box. `index_empty` means
 the bucket has nothing indexed yet.
 
 Read the status code, not only `response.ok`. A 200 carries the answer. A 202
-carries a run that is still working: read it with `GET /runs/<id>`, or follow
+carries a run that is still working: read it with `GET /research/<id>`, or follow
 its events as the research section below does. Send `keys` or `keyPrefix` to
 answer from some of the bucket's objects instead of all of them.
 
@@ -170,10 +170,10 @@ expires.
 browser must not wait on one request.
 
 1. Start the run on the server and give the run id to the browser.
-2. Read `GET /runs/<id>/events` as server-sent events, and push each
+2. Read `GET /research/<id>/events` as server-sent events, and push each
    progress event to the browser.
 3. On the last event, store the answer and its sources.
-4. Read `GET /runs/<id>` when a browser rejoins. The run stays readable
+4. Read `GET /research/<id>` when a browser rejoins. The run stays readable
    until its `expiresAt`. Read that field; do not assume a number.
 
 ## Per-user results

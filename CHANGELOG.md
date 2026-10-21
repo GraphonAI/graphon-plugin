@@ -8,15 +8,36 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.1.0
+
+- `create_bucket` and `graphon buckets create` take a name alone. A call that
+  omits provider, location, or indexing gets gcp, the US multi-region, and
+  indexing enabled. All three stay fixed after creation.
+- `graphon-storage` has a "Create a bucket" section. It tells the agent to
+  report the provider and the location, and to name the choice the user has.
+  The agent asks first only when the user named a region, a country, a
+  compliance rule, or a cloud.
+- `graphon buckets locations` lists every provider and location.
+- Every Graphon Storage error carries a request id, and the CLI prints it at
+  the end of the error message. `graphon-troubleshoot` says so.
+
+## 2.0.1
+
+- `get_run` is `get_research` again, and the run routes keep their
+  `/research` paths. A run id starts with `rsc`, as it did before. The rename
+  that 2.0.0 announced is withdrawn: nothing else in that release changes.
+- A run id issued while 2.0.0 was out starts with `qry` and no longer reads.
+  Start the run again.
+
 ## 2.0.0
 
-- `get_research` is now `get_run`, and it reads a run of any mode. Every
-  question answers as a query run, so `answer_question` and `start_research`
-  both produce a run that `get_run` reads until it expires.
+- `get_research` reads a run of any mode. Every question answers as a query
+  run, so `answer_question` and `start_research` both produce a run that
+  `get_research` reads until it expires.
 - A finished run stays readable until its `expiresAt`, not one hour: one
   day for an answer, seven days for research.
 - `result_too_large` now carries `retryWith`: the call that returns a smaller
-  result. For a run it names `get_run` with the cited sources only.
+  result. For a run it names `get_research` with the cited sources only.
 - `search_objects`, `answer_question`, and `start_research` take `keys` and
   `keyPrefix`, so a question can be scoped to some objects of a bucket
   instead of naming a file inside the question text.

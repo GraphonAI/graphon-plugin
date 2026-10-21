@@ -15,7 +15,7 @@ This plugin gives your agent three things:
   and search on Graphon, search and question your files, move data in, and run
   day-to-day storage work.
 
-Version 2.0.0. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 2.1.0. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 

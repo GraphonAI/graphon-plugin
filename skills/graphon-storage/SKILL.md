@@ -110,6 +110,26 @@ show the whole bucket.
 Turning on public read exposes every object in the bucket. Say that in one
 line and wait for the user to confirm before you change it.
 
+## Create a bucket
+
+`create_bucket` and `graphon buckets create` take a name alone.
+
+```bash
+graphon buckets create support-tickets
+graphon buckets create support-tickets --provider r2 --location wnam
+graphon buckets locations
+```
+
+Three settings are fixed when the bucket is created: indexing, provider, and
+location. A call that omits them gets indexing enabled, provider `gcp`, and the
+US multi-region. The CLI prints the three values, and `create_bucket` returns
+them.
+
+Name the provider and the location in your report, and say that the user can
+choose others. Do not ask first. Ask only when the user named a region, a
+country, a compliance rule, or a cloud they already use. Then run
+`graphon buckets locations` and offer the locations of that provider.
+
 ## Objects
 
 Use `list_objects` with a `prefix` to page through a folder. Treat the key as

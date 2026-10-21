@@ -162,12 +162,12 @@ asks for every match. Use `recall` for it.
 
 The tool follows the run and returns it when it ends. Its first progress
 notification names the run id. If your call ends before the run does,
-read the run with `get_run`. A finished run stays readable until its
+read the run with `get_research`. A finished run stays readable until its
 `expiresAt`, then it is gone. Read `expiresAt`; do not assume a number.
 
 ```bash
 graphon research start <bucket> "Every checkout timeout this quarter" --mode recall --watch
-graphon run get <runId>
+graphon research get <researchId>
 ```
 
 `--watch` prints each step until the answer arrives. Without it, the command

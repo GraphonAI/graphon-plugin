@@ -87,10 +87,10 @@ export function Answer({ answer, sources }: { answer: string; sources: Source[] 
 ## Stream a run
 
 ```ts
-// app/api/runs/[id]/events/route.ts
+// app/api/research/[id]/events/route.ts
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   await requireUser();
-  const upstream = await fetch(`${BASE}/runs/${params.id}/events`, {
+  const upstream = await fetch(`${BASE}/research/${params.id}/events`, {
     headers: {
       authorization: `Bearer ${process.env.GRAPHON_API_KEY!}`,
       accept: 'text/event-stream',
