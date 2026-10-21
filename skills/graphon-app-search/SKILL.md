@@ -119,9 +119,9 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 
 | Route | Body | Returns |
 | --- | --- | --- |
-| `POST /search` | `bucketId`, `query`, `mode`, `resultUnit`, `limit`, `cursor` | Ranked results, each with a key, a version, and the places that matched |
-| `POST /answer` | `bucketId`, `query`, `history`, `image` | One answer with `[[SRC:0001]]` markers, and the sources |
-| `POST /research` | `bucketId`, `query`, `mode`, `history` | A run id at once. Read its events, then its answer. |
+| `POST /search` | `bucketId`, `query`, `mode`, `resultUnit`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
+| `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix`, `waitSeconds` | 200 with one answer with `[[SRC:0001]]` markers and its sources, or 202 with a run that is still working |
+| `POST /research` | `bucketId`, `query`, `mode`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
 
 ## A search endpoint
 
@@ -146,9 +146,16 @@ footnotes.
 When `answer` is null, show the warning, not an empty box. `index_empty` means
 the bucket has nothing indexed yet.
 
+Read the status code, not only `response.ok`. A 200 carries the answer. A 202
+carries a run that is still working: read it with `GET /runs/<id>`, or follow
+its events as the research section below does. Send `keys` or `keyPrefix` to
+answer from some of the bucket's objects instead of all of them.
+
 ## A chat loop
 
-The app owns the conversation. Graphon stores nothing.
+The app owns the conversation. Graphon keeps no conversation of its own: the
+turns you send are stored on the run that answers them, and go when it
+expires.
 
 1. Keep the turns in the app's database or session.
 2. Send them in `history`, oldest first, at most 32 turns, each one `user` or
@@ -163,11 +170,11 @@ The app owns the conversation. Graphon stores nothing.
 browser must not wait on one request.
 
 1. Start the run on the server and give the run id to the browser.
-2. Read `GET /research/<id>/events` as server-sent events, and push each
+2. Read `GET /runs/<id>/events` as server-sent events, and push each
    progress event to the browser.
 3. On the last event, store the answer and its sources.
-4. Read `GET /research/<id>` when a browser rejoins. The run stays readable
-   for one hour after it ends.
+4. Read `GET /runs/<id>` when a browser rejoins. The run stays readable
+   until its `expiresAt`. Read that field; do not assume a number.
 
 ## Per-user results
 

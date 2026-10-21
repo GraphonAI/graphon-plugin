@@ -64,7 +64,8 @@ forward, that is a stop: say so and end your turn.
   does not name. If the skill does not name it, it does not exist.
 
 A bucket with indexing enabled can be read three ways. Each call names one
-bucket, and Graphon answers from the whole bucket.
+bucket, and Graphon reads the whole bucket unless the call scopes it with
+`keys` or `keyPrefix`.
 
 ## Choose the operation
 
@@ -105,6 +106,8 @@ new version of a file indexes, its older version still answers.
 | `resultUnit` | `object` (the default), `passage` | `object` gives one result for each file, with up to 3 places. `passage` gives one result for each place. |
 | `limit` | 1 to 100, 10 by default | Keep it small. Read the best results first. |
 | `cursor` | `nextCursor` from the page before | Send the same body with it. It works for 40 minutes. |
+| `keys` | At most 50 object keys | Read only these objects. `answer_question` and `start_research` take it too, and the CLI takes `--key`. |
+| `keyPrefix` | A key prefix, such as `videos/2026/` | Read only the objects whose key begins with it. With `keys`, an object must match both. The CLI takes `--prefix`. |
 
 Both modes match exact words and meaning together. A result holds the key, the
 version, and each place that matched: a page of a document, a time range in a
@@ -128,7 +131,8 @@ graphon search <bucket> "connection pool exhausted" --unit passage
 - A source with `cited` false was read but not used. Do not present it as
   evidence.
 - For a chat, send the earlier turns in `history`, oldest first, at most 32.
-  Graphon stores nothing, so the turns must come from you each time.
+  Graphon keeps no conversation of its own, so the turns must come from you
+  each time. The turns you send are stored on the run that answers them.
 - An image question is premium. Send the picture in `image`. The reply holds
   `imageDescription`. Send that description in the next turn's `history`, and
   the picture does not go again.
@@ -157,13 +161,13 @@ every", "show all", "show every", "every time", "how many", or "which ones"
 asks for every match. Use `recall` for it.
 
 The tool follows the run and returns it when it ends. Its first progress
-notification names the research id. If your call ends before the run does,
-read the run with `get_research`. A finished run stays readable for one hour,
-then it is gone.
+notification names the run id. If your call ends before the run does,
+read the run with `get_run`. A finished run stays readable until its
+`expiresAt`, then it is gone. Read `expiresAt`; do not assume a number.
 
 ```bash
 graphon research start <bucket> "Every checkout timeout this quarter" --mode recall --watch
-graphon research get <researchId>
+graphon run get <runId>
 ```
 
 `--watch` prints each step until the answer arrives. Without it, the command

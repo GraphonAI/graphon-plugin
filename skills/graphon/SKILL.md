@@ -121,7 +121,7 @@ the CLI, or the Graphon API from app code: send the key as a Bearer token to
 | --- | --- | --- |
 | Rank objects or passages | `search_objects` | `POST /search` |
 | Answer with citations | `answer_question` | `POST /answer` |
-| Deep research | `start_research`, `get_research` | `POST /research`, `GET /research/<research id>` |
+| Deep research | `start_research`, `get_run` | `POST /research`, `GET /runs/<run id>` |
 
 A file answers only after it finishes indexing. Check the bucket first:
 

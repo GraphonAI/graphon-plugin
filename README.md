@@ -15,7 +15,7 @@ This plugin gives your agent three things:
   and search on Graphon, search and question your files, move data in, and run
   day-to-day storage work.
 
-Version 1.3.1. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 2.0.0. MCP server: `https://api.beta.graphon.ai/mcp`.
 
 ## Install
 
@@ -38,11 +38,11 @@ npx skills add GraphonAI/graphon-plugin
 | --- | --- | --- |
 | Claude Code | Verified | `claude plugin marketplace add GraphonAI/graphon-plugin`<br>`claude plugin install graphon@graphon --scope user` |
 | Codex | Verified | `codex plugin marketplace add GraphonAI/graphon-plugin`<br>`codex plugin add graphon@graphon` |
-| Cursor | Verified | `npx plugins add GraphonAI/graphon-plugin`<br>A Cursor marketplace listing is pending review. |
+| Cursor | Verified | `npx plugins add GraphonAI/graphon-plugin --target cursor`<br>A Cursor marketplace listing is pending review. |
 | Gemini CLI | Blocked upstream | `gemini extensions install https://github.com/GraphonAI/graphon-plugin --consent`<br>Gemini Code Assist no longer signs in individual accounts, so the extension installs but cannot connect. Skills still work through `npx skills add`. |
 | Antigravity IDE | Verified | `npx skills add GraphonAI/graphon-plugin`<br>Copy mcp/antigravity.json to ~/.codeium/antigravity/mcp_config.json, restart, then sign the server in from the MCP panel: Antigravity does not prompt for that on its own. The tools work once signed in. The skills load but this agent does not reliably follow their stop rules, so approve its commands one at a time. The Antigravity CLI does not surface MCP tools yet. |
 | Copilot CLI | Verified | `copilot plugin marketplace add GraphonAI/graphon-plugin`<br>`copilot plugin install graphon@graphon`<br>If MCP tools are missing, your organization may block third-party MCP servers. Check github.com/settings/copilot. The skills work either way. |
-| Another agent | Should work | `npx plugins add GraphonAI/graphon-plugin`<br>`npx add-mcp https://api.beta.graphon.ai/mcp` |
+| Another agent | Should work | `npx plugins add GraphonAI/graphon-plugin`<br>`npx add-mcp https://api.beta.graphon.ai/mcp -g --name graphon` |
 
 **Verified** means a real session connected, called a tool, and the call
 was recorded. **Should work** means the manifest ships and validates, but

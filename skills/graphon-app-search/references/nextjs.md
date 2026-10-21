@@ -84,13 +84,13 @@ export function Answer({ answer, sources }: { answer: string; sources: Source[] 
 }
 ```
 
-## Stream a research run
+## Stream a run
 
 ```ts
-// app/api/research/[id]/events/route.ts
+// app/api/runs/[id]/events/route.ts
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   await requireUser();
-  const upstream = await fetch(`${BASE}/research/${params.id}/events`, {
+  const upstream = await fetch(`${BASE}/runs/${params.id}/events`, {
     headers: {
       authorization: `Bearer ${process.env.GRAPHON_API_KEY!}`,
       accept: 'text/event-stream',
@@ -104,6 +104,6 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 }
 ```
 
-The browser reads it with `EventSource`. A `research.progress` event carries
-`label`, `step`, and `totalSteps`. A `research.succeeded` event carries the
+The browser reads it with `EventSource`. A `run.progress` event carries
+`label`, `step`, and `totalSteps`. A `run.succeeded` event carries the
 finished run with its answer and sources.

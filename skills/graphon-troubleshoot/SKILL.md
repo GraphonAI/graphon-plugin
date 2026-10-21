@@ -75,7 +75,7 @@ with the same inputs, and do not widen a role to make an error go away.
 | `forbidden` | The key's role is below the tool's role | Say which role the tool needs. Do not create a wider key without asking. |
 | `insufficient_scope` | An OAuth grant is below the tool's role | The user approves more access on the consent page |
 | `not_found`, `object_not_found`, `resource_not_found` | The bucket or key does not exist in this workspace | Check the workspace first, then list with a prefix. A key is case-sensitive. |
-| `result_too_large` | The result passed 100,000 characters | Narrow it: add a `prefix`, lower `maxBytes`, or page with a cursor |
+| `result_too_large` | The result passed 100,000 characters | Run the call in the error's `retryWith`. It asks for less of the same result. |
 | `request_too_large` | The request body passed 2 MiB | Use `create_object_upload_url` instead of `write_object` |
 | `content_too_large`, `entity_too_large` | The object passed the inline 1 MiB limit | Use `create_object_upload_url` |
 | `object_locked` | Retention still covers the object | Report the keys. Retention cannot be bypassed. |
@@ -92,7 +92,7 @@ with the same inputs, and do not widen a role to make an error go away.
 | `bucket_not_ready` | The bucket is still being created | Call `get_bucket` until its phase is `active` |
 | `bucket_offline` | An editor took the bucket offline | An editor must bring it online first |
 | `feature_not_in_plan` | Research and image questions are premium | Tell the user which feature the workspace plan lacks |
-| `not_found` from `get_research` or `graphon research get` | The run ended more than one hour ago | A finished run is readable for one hour only. Start the research again. |
+| `not_found` from `get_run` or `graphon run get` | The run is past its `expiresAt` | A finished run is readable until `expiresAt`. Start the run again. |
 | `graphon search`, `graphon ask`, or `graphon research start` exits 1 with an indexing message | The bucket cannot answer yet | The message names the next command. Run it, then ask again. |
 
 A search with a warning returns no results, and it is not an error:

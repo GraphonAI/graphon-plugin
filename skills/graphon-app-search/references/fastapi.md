@@ -73,12 +73,13 @@ async def start_research(question: str, user=Depends(current_user)):
     body = await call(
         "research", {"bucketId": BUCKET_ID, "query": question, "mode": "ultra"}
     )
-    return {"researchId": body["research"]["id"]}
+    return {"runId": body["run"]["id"]}
 ```
 
-Then read `GET /research/<id>/events` as a server-sent event stream and send
-each progress event to the browser. Read `GET /research/<id>` when a browser
-rejoins. The run stays readable for one hour after it ends.
+Then read `GET /runs/<id>/events` as a server-sent event stream and send
+each progress event to the browser. Read `GET /runs/<id>` when a browser
+rejoins. The run stays readable until its `expiresAt`. Read that field; do
+not assume a number.
 
 ## Warnings are not errors
 

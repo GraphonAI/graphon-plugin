@@ -8,6 +8,21 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.0.0
+
+- `get_research` is now `get_run`, and it reads a run of any mode. Every
+  question answers as a query run, so `answer_question` and `start_research`
+  both produce a run that `get_run` reads until it expires.
+- A finished run stays readable until its `expiresAt`, not one hour: one
+  day for an answer, seven days for research.
+- `result_too_large` now carries `retryWith`: the call that returns a smaller
+  result. For a run it names `get_run` with the cited sources only.
+- `search_objects`, `answer_question`, and `start_research` take `keys` and
+  `keyPrefix`, so a question can be scoped to some objects of a bucket
+  instead of naming a file inside the question text.
+- A slow tool now reports progress while it works, so a client no longer
+  drops the call before the answer arrives.
+
 ## 1.3.1
 
 - The search skill now says which research mode answers a question that asks
