@@ -111,7 +111,8 @@ new version of a file indexes, its older version still answers.
 
 Both modes match exact words and meaning together. A result holds the key, the
 version, and each place that matched: a page of a document, a time range in a
-recording, or a path in a JSON file.
+recording, or a path in a JSON file. Pages count from 0, so page 0 is the
+first page. Give the page as it is.
 
 Search gives you the key. Read the file with `read_object`, or give the user a
 link with `create_object_download_url`. From a shell:

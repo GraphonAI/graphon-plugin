@@ -8,6 +8,11 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.1.1
+
+- The search skill now says that pages count from 0, so page 0 is the first
+  page.
+
 ## 2.1.0
 
 - `create_bucket` and `graphon buckets create` take a name alone. A call that

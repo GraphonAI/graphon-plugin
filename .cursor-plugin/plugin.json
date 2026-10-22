@@ -2,7 +2,7 @@
   "name": "graphon",
   "displayName": "Graphon",
   "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "Graphon"
   },
