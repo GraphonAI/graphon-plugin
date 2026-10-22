@@ -121,7 +121,7 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 | --- | --- | --- |
 | `POST /search` | `bucketId`, `query`, `mode`, `resultUnit`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
 | `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix`, `waitSeconds` | 200 with one answer with `[[SRC:0001]]` markers and its sources, or 202 with a run that is still working |
-| `POST /research` | `bucketId`, `query`, `mode`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
+| `POST /research` | `bucketId`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
 
 ## A search endpoint
 

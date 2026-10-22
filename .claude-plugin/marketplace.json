@@ -10,7 +10,7 @@
       "name": "graphon",
       "source": "./",
       "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
-      "version": "2.1.1"
+      "version": "2.2.0"
     }
   ]
 }

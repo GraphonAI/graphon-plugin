@@ -8,6 +8,14 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.2.0
+
+- Research takes no mode. The search skills no longer teach `ultra`,
+  `recall`, a research `mode` field, or `graphon research start --mode`. The
+  API returns 400 `invalid_request` for a research request that sends `mode`.
+- A question that asks for every match still goes to `start_research`, not
+  `answer_question`.
+
 ## 2.1.1
 
 - The search skill now says that pages count from 0, so page 0 is the first

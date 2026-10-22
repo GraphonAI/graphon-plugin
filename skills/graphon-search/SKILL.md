@@ -151,15 +151,13 @@ run it for a user, because it reads a terminal and a pipe the same way.
 
 ## Research
 
-`start_research` runs a deep mode on one bucket. Both modes are premium:
+`start_research` researches one bucket in depth. It searches, reads, then
+searches again inside the bucket with what it learned. It takes no mode.
+Research is premium.
 
-- `ultra` searches, reads, then searches again inside the bucket.
-- `recall` keeps looking until it finds nothing new. Use it for "every time
-  …" questions, where a missed match is the failure.
-
-A question that starts with "find all", "find every", "list all", "list
-every", "show all", "show every", "every time", "how many", or "which ones"
-asks for every match. Use `recall` for it.
+A question that asks for every match, such as "find all the incidents" or
+"every time checkout timed out", goes to `start_research`, not
+`answer_question`.
 
 The tool follows the run and returns it when it ends. Its first progress
 notification names the run id. If your call ends before the run does,
@@ -167,7 +165,7 @@ read the run with `get_research`. A finished run stays readable until its
 `expiresAt`, then it is gone. Read `expiresAt`; do not assume a number.
 
 ```bash
-graphon research start <bucket> "Every checkout timeout this quarter" --mode recall --watch
+graphon research start <bucket> "Every checkout timeout this quarter" --watch
 graphon research get <researchId>
 ```
 
