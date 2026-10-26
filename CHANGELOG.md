@@ -8,6 +8,17 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.3.0
+
+- Search results and answer sources hold spans instead of locations with a
+  snippet. A span names `pages`, `chars`, `seconds`, or the whole `file`, and
+  holds no text.
+- The search skill teaches `read_span` and `graphon read-span`, which return
+  the content of one span.
+- `read_span` takes `representation`. Agents send `representation: "text"` to
+  read words: the text of a document, or the speech of a recording. `next` is
+  the input of the next read, with the same representation.
+
 ## 2.2.0
 
 - Research takes no mode. The search skills no longer teach `ultra`,

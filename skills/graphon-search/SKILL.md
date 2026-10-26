@@ -69,11 +69,11 @@ bucket, and Graphon reads the whole bucket unless the call scopes it with
 
 ## Choose the operation
 
-| The user wants | Use | Time |
-| --- | --- | --- |
-| Files or passages to read, open, or list | `search_objects` | Under a second to a few seconds |
-| One written answer, with citations | `answer_question` | Seconds, at most 120 |
-| A question that needs many reads, or every match | `start_research` | Minutes, at most 600 seconds |
+| The user wants                                   | Use               | Time                            |
+| ------------------------------------------------ | ----------------- | ------------------------------- |
+| Files or passages to read, open, or list         | `search_objects`  | Under a second to a few seconds |
+| One written answer, with citations               | `answer_question` | Seconds, at most 120            |
+| A question that needs many reads, or every match | `start_research`  | Minutes, at most 600 seconds    |
 
 Search first when you must read the files yourself. Ask when the user wants
 the answer, not the files. Research only when a Standard answer is not
@@ -100,26 +100,42 @@ new version of a file indexes, its older version still answers.
 
 `search_objects` takes the bucket, the text, and four options:
 
-| Option | Values | Use |
-| --- | --- | --- |
-| `mode` | `standard` (the default), `fast` | `standard` reranks the top results. `fast` skips the reranker. |
-| `resultUnit` | `object` (the default), `passage` | `object` gives one result for each file, with up to 3 places. `passage` gives one result for each place. |
-| `limit` | 1 to 100, 10 by default | Keep it small. Read the best results first. |
-| `cursor` | `nextCursor` from the page before | Send the same body with it. It works for 40 minutes. |
-| `keys` | At most 50 object keys | Read only these objects. `answer_question` and `start_research` take it too, and the CLI takes `--key`. |
-| `keyPrefix` | A key prefix, such as `videos/2026/` | Read only the objects whose key begins with it. With `keys`, an object must match both. The CLI takes `--prefix`. |
+| Option       | Values                               | Use                                                                                                               |
+| ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `mode`       | `standard` (the default), `fast`     | `standard` puts the best result first. `fast` is quicker.                                                         |
+| `resultUnit` | `object` (the default), `passage`    | `object` gives one result for each file, with up to 3 spans. `passage` gives one result for each span.            |
+| `limit`      | 1 to 100, 10 by default              | Keep it small. Read the best results first.                                                                       |
+| `cursor`     | `nextCursor` from the page before    | Send the same body with it. It works for 40 minutes.                                                              |
+| `keys`       | At most 50 object keys               | Read only these objects. `answer_question` and `start_research` take it too, and the CLI takes `--key`.           |
+| `keyPrefix`  | A key prefix, such as `videos/2026/` | Read only the objects whose key begins with it. With `keys`, an object must match both. The CLI takes `--prefix`. |
 
 Both modes match exact words and meaning together. A result holds the key, the
-version, and each place that matched: a page of a document, a time range in a
-recording, or a path in a JSON file. Pages count from 0, so page 0 is the
-first page. Give the page as it is.
+version, and a span for each place that matched: `pages` of a document,
+`chars` of a text file or a mail, `seconds` of a recording, or the whole
+`file`. A span runs from `start` to `end`, without `end` itself. Pages count
+from 0, so page 0 is the first page. Give the page as it is.
 
-Search gives you the key. Read the file with `read_object`, or give the user a
-link with `create_object_download_url`. From a shell:
+A span holds no text. Send it to `read_span` exactly as search returned it.
+The span says where. `representation` says what form:
+
+- `representation: "text"` returns words: the text of a document, or the
+  speech of a video or a recording as lines with start and end seconds. Send
+  it whenever you need to read the content. An image has no text form
+  (`invalid_representation`).
+- `representation: "raw"` (the default) returns a link to a PDF of only those
+  pages, to the image, or to a clip of the span. A text file or a mail
+  returns its text.
+
+The response `span` can use a different unit from the span you sent. For
+example, the text of pages comes back as `chars`. A large span comes back in
+parts. To read on, send `next` to `read_span` until `next` is null. Read the
+whole file with `read_object`, or give the user a link with
+`create_object_download_url`. From a shell:
 
 ```bash
 graphon search <bucket> "connection pool exhausted" --mode fast --limit 20
 graphon search <bucket> "connection pool exhausted" --unit passage
+graphon read-span <bucket> <key> --version-id <versionId> --unit chars --start 1200 --end 3400 --representation text
 ```
 
 ## Answers and chat

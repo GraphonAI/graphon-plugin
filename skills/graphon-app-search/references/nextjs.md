@@ -8,8 +8,16 @@ import { NextResponse } from 'next/server';
 import { BUCKET_ID, graphon } from '@/lib/graphon-search';
 import { requireUser } from '@/lib/auth';
 
+type Span = {
+  key: string;
+  versionId: string;
+  unit: string;
+  start?: number;
+  end?: number;
+  pages?: { start: number; end: number };
+};
 type SearchResponse = {
-  results: { key: string; versionId: string | null; score: number; locations: unknown[] }[];
+  results: { key: string; versionId: string | null; score: number; spans: Span[] }[];
   nextCursor: string | null;
   warnings: { code: string; message: string }[];
 };
@@ -42,10 +50,18 @@ import { NextResponse } from 'next/server';
 import { BUCKET_ID, graphon } from '@/lib/graphon-search';
 import { requireUser } from '@/lib/auth';
 
+type Span = {
+  key: string;
+  versionId: string;
+  unit: string;
+  start?: number;
+  end?: number;
+  pages?: { start: number; end: number };
+};
 type Turn = { role: 'user' | 'assistant'; content: string };
 type AnswerResponse = {
   answer: string | null;
-  sources: { ref: string; key: string; cited: boolean; location: { page?: number } }[];
+  sources: { ref: string; key: string; cited: boolean; span: Span }[];
   warnings: { code: string; message: string }[];
 };
 
