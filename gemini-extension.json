@@ -1,6 +1,6 @@
 {
   "name": "graphon",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

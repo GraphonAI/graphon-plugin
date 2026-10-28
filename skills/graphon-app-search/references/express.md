@@ -12,7 +12,7 @@ router.post('/search', requireUser, async (req, res) => {
   const body = await graphon('search', {
     bucketId: BUCKET_ID,
     query: req.body.query,
-    mode: 'standard',
+    mode: 'hybrid',
     limit: 10,
     ...(req.body.cursor ? { cursor: req.body.cursor } : {}),
   });

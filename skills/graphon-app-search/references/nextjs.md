@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const body = await graphon<SearchResponse>('search', {
     bucketId: BUCKET_ID,
     query,
-    mode: 'standard',
+    mode: 'hybrid',
     limit: 10,
     ...(cursor ? { cursor } : {}),
   });

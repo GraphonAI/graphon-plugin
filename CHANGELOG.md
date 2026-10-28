@@ -8,6 +8,22 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 2.4.0
+
+- Search modes are `hybrid` (the default) and `keyword`. The search skills
+  teach `--mode keyword` for exact words, and no longer teach `fast` or
+  `standard`.
+- The app search skill teaches that Answer waits for the answer and returns
+  200. It no longer teaches `waitSeconds` or a 202.
+- Answer stores nothing. `answer_question` and `POST /answer` return no `id`
+  and no `expiresAt`, and there is no answer to read again. `get_research`
+  and `graphon research get` read research runs only, and a run has no
+  `mode` field. The search skills teach this.
+- The search skills give the Answer limit: an answer or an error within
+  about 2 minutes.
+- The app search skill teaches that a source whose object version is gone has
+  `versionId` and `span` null, and shows its key with no link.
+
 ## 2.3.0
 
 - Search results and answer sources hold spans instead of locations with a

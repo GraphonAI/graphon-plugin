@@ -24,8 +24,8 @@ async def call(route: str, body: dict) -> dict:
     return response.json()
 ```
 
-The answer route can take 120 seconds, or 165 with an image, so the HTTP
-timeout must be longer than the default.
+The answer route usually takes seconds. It returns an answer or an error
+within about 2 minutes, so the HTTP timeout must be longer than the default.
 
 ## Search and answer endpoints
 
@@ -42,7 +42,7 @@ router = APIRouter()
 async def search(query: str, cursor: str | None = None, user=Depends(current_user)):
     body = await call(
         "search",
-        {"bucketId": BUCKET_ID, "query": query, "mode": "standard", "limit": 10}
+        {"bucketId": BUCKET_ID, "query": query, "mode": "hybrid", "limit": 10}
         | ({"cursor": cursor} if cursor else {}),
     )
     # Graphon answers from the whole bucket. Keep this tenant's keys only.

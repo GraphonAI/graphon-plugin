@@ -120,7 +120,7 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 | Route | Body | Returns |
 | --- | --- | --- |
 | `POST /search` | `bucketId`, `query`, `mode`, `resultUnit`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
-| `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix`, `waitSeconds` | 200 with one answer with `[[SRC:0001]]` markers and its sources, or 202 with a run that is still working |
+| `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix` | 200 with one answer with `[[SRC:0001]]` markers and its sources |
 | `POST /research` | `bucketId`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
 
 ## A search endpoint
@@ -130,15 +130,16 @@ the browser as a link. Sign a download URL only when the user opens a result,
 so an expired link never sits in the page.
 
 Keep `limit` at 10 for a search box. Page with `nextCursor`, which works for
-40 minutes. Use `mode: 'fast'` for a type-ahead box, and `standard` for a
-results page.
+40 minutes. Leave `mode` at `hybrid` for most searches. Use `mode: 'keyword'`
+for exact words, such as an ID, a code, or an error message.
 
 ## An answer endpoint
 
 Return the answer text and the sources together. Render each `[[SRC:0001]]`
 marker as a link to the source whose `ref` is `SRC:0001`. A source carries the
 key, the version, and the place, so the link can open the file at its page or
-its time range.
+its time range. When the object version is gone, `versionId` and `span` are
+null: show the key with no link.
 
 A source with `cited` false was read but not cited. Keep it out of the
 footnotes.
@@ -146,16 +147,16 @@ footnotes.
 When `answer` is null, show the warning, not an empty box. `index_empty` means
 the bucket has nothing indexed yet.
 
-Read the status code, not only `response.ok`. A 200 carries the answer. A 202
-carries a run that is still working: read it with `GET /research/<id>`, or follow
-its events as the research section below does. Send `keys` or `keyPrefix` to
-answer from some of the bucket's objects instead of all of them.
+The call waits for the answer and returns 200. Graphon stores nothing from
+it: the response has no id, and no call reads the answer again. Store the
+answer and its sources in the app if you need them later. Send `keys` or
+`keyPrefix` to answer from some of the bucket's objects instead of all of
+them.
 
 ## A chat loop
 
-The app owns the conversation. Graphon keeps no conversation of its own: the
-turns you send are stored on the run that answers them, and go when it
-expires.
+The app owns the conversation. Graphon keeps no conversation of its own, and
+an answer stores nothing, so the turns must come from the app each time.
 
 1. Keep the turns in the app's database or session.
 2. Send them in `history`, oldest first, at most 32 turns, each one `user` or

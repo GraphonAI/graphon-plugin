@@ -72,11 +72,11 @@ bucket, and Graphon reads the whole bucket unless the call scopes it with
 | The user wants                                   | Use               | Time                            |
 | ------------------------------------------------ | ----------------- | ------------------------------- |
 | Files or passages to read, open, or list         | `search_objects`  | Under a second to a few seconds |
-| One written answer, with citations               | `answer_question` | Seconds, at most 120            |
+| One written answer, with citations               | `answer_question` | Seconds, at most about 2 min    |
 | A question that needs many reads, or every match | `start_research`  | Minutes, at most 600 seconds    |
 
 Search first when you must read the files yourself. Ask when the user wants
-the answer, not the files. Research only when a Standard answer is not
+the answer, not the files. Research only when an answer is not
 enough, because it is premium and slow.
 
 ## Check the bucket first
@@ -102,14 +102,14 @@ new version of a file indexes, its older version still answers.
 
 | Option       | Values                               | Use                                                                                                               |
 | ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `mode`       | `standard` (the default), `fast`     | `standard` puts the best result first. `fast` is quicker.                                                         |
+| `mode`       | `hybrid` (the default), `keyword`    | `hybrid` matches exact words and meaning. `keyword` matches exact words only, such as an ID or an error message.  |
 | `resultUnit` | `object` (the default), `passage`    | `object` gives one result for each file, with up to 3 spans. `passage` gives one result for each span.            |
 | `limit`      | 1 to 100, 10 by default              | Keep it small. Read the best results first.                                                                       |
 | `cursor`     | `nextCursor` from the page before    | Send the same body with it. It works for 40 minutes.                                                              |
 | `keys`       | At most 50 object keys               | Read only these objects. `answer_question` and `start_research` take it too, and the CLI takes `--key`.           |
 | `keyPrefix`  | A key prefix, such as `videos/2026/` | Read only the objects whose key begins with it. With `keys`, an object must match both. The CLI takes `--prefix`. |
 
-Both modes match exact words and meaning together. A result holds the key, the
+A result holds the key, the
 version, and a span for each place that matched: `pages` of a document,
 `chars` of a text file or a mail, `seconds` of a recording, or the whole
 `file`. A span runs from `start` to `end`, without `end` itself. Pages count
@@ -133,7 +133,7 @@ whole file with `read_object`, or give the user a link with
 `create_object_download_url`. From a shell:
 
 ```bash
-graphon search <bucket> "connection pool exhausted" --mode fast --limit 20
+graphon search <bucket> "ERR_POOL_TIMEOUT" --mode keyword --limit 20
 graphon search <bucket> "connection pool exhausted" --unit passage
 graphon read-span <bucket> <key> --version-id <versionId> --unit chars --start 1200 --end 3400 --representation text
 ```
@@ -149,7 +149,7 @@ graphon read-span <bucket> <key> --version-id <versionId> --unit chars --start 1
   evidence.
 - For a chat, send the earlier turns in `history`, oldest first, at most 32.
   Graphon keeps no conversation of its own, so the turns must come from you
-  each time. The turns you send are stored on the run that answers them.
+  each time. Graphon stores no answer, and there is no id to read it again.
 - An image question is premium. Send the picture in `image`. The reply holds
   `imageDescription`. Send that description in the next turn's `history`, and
   the picture does not go again.
