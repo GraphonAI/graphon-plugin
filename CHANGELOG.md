@@ -8,6 +8,20 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 3.0.0
+
+- `read_spans` replaces `read_span`, and `graphon read-spans` replaces
+  `graphon read-span`. The search skill teaches them. One call reads up to 50
+  spans and returns one result for each span, in order.
+- `read_spans` takes `include` in place of `representation`: `text` (the
+  default), `raw`, and `object`. A span that cannot be read has an `error` on
+  its own result. An image comes back as image content, audio as audio
+  content, and other files as embedded resources.
+- Pages count from 1, so page 1 is the first page. The search skills say so.
+- `search_objects` and `POST /search` take `resultType` in place of
+  `resultUnit`, and `graphon search` takes `--result-type` in place of
+  `--unit`.
+
 ## 2.4.0
 
 - Search modes are `hybrid` (the default) and `keyword`. The search skills

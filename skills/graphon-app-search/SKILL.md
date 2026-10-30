@@ -119,7 +119,7 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 
 | Route | Body | Returns |
 | --- | --- | --- |
-| `POST /search` | `bucketId`, `query`, `mode`, `resultUnit`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
+| `POST /search` | `bucketId`, `query`, `mode`, `resultType`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
 | `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix` | 200 with one answer with `[[SRC:0001]]` markers and its sources |
 | `POST /research` | `bucketId`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
 
@@ -138,8 +138,10 @@ for exact words, such as an ID, a code, or an error message.
 Return the answer text and the sources together. Render each `[[SRC:0001]]`
 marker as a link to the source whose `ref` is `SRC:0001`. A source carries the
 key, the version, and the place, so the link can open the file at its page or
-its time range. When the object version is gone, `versionId` and `span` are
-null: show the key with no link.
+its time range. Pages count from 1, the same as a PDF viewer, so use
+`span.start` or `span.pages.start` as the page number as it is. When the
+object version is gone, `versionId` and `span` are null: show the key with no
+link.
 
 A source with `cited` false was read but not cited. Keep it out of the
 footnotes.

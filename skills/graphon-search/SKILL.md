@@ -103,7 +103,7 @@ new version of a file indexes, its older version still answers.
 | Option       | Values                               | Use                                                                                                               |
 | ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | `mode`       | `hybrid` (the default), `keyword`    | `hybrid` matches exact words and meaning. `keyword` matches exact words only, such as an ID or an error message.  |
-| `resultUnit` | `object` (the default), `passage`    | `object` gives one result for each file, with up to 3 spans. `passage` gives one result for each span.            |
+| `resultType` | `object` (the default), `passage`    | `object` gives one result for each file, with up to 3 spans. `passage` gives one result for each span.            |
 | `limit`      | 1 to 100, 10 by default              | Keep it small. Read the best results first.                                                                       |
 | `cursor`     | `nextCursor` from the page before    | Send the same body with it. It works for 40 minutes.                                                              |
 | `keys`       | At most 50 object keys               | Read only these objects. `answer_question` and `start_research` take it too, and the CLI takes `--key`.           |
@@ -113,29 +113,36 @@ A result holds the key, the
 version, and a span for each place that matched: `pages` of a document,
 `chars` of a text file or a mail, `seconds` of a recording, or the whole
 `file`. A span runs from `start` to `end`, without `end` itself. Pages count
-from 0, so page 0 is the first page. Give the page as it is.
+from 1, so page 1 is the first page. Give the page as it is. Chars count
+Unicode code points from 0, and seconds count from 0.
 
-A span holds no text. Send it to `read_span` exactly as search returned it.
-The span says where. `representation` says what form:
+A span holds no text. Send spans to `read_spans` exactly as search returned
+them, up to 50 in one call. You get one result for each span, in the same
+order. `include` names the parts of each result:
 
-- `representation: "text"` returns words: the text of a document, or the
-  speech of a video or a recording as lines with start and end seconds. Send
-  it whenever you need to read the content. An image has no text form
-  (`invalid_representation`).
-- `representation: "raw"` (the default) returns a link to a PDF of only those
-  pages, to the image, or to a clip of the span. A text file or a mail
-  returns its text.
+- `text` (the default) returns words: the text of a document, or the speech
+  of a video or a recording as `lines` with start and end seconds. An image
+  has no text, so its result has no `text`.
+- `raw` returns the span in its own format: a PDF of only those pages, the
+  image, or a clip of the span. A text file or a mail returns its text.
+- `object` returns the whole object.
 
-The response `span` can use a different unit from the span you sent. For
-example, the text of pages comes back as `chars`. A large span comes back in
-parts. To read on, send `next` to `read_span` until `next` is null. Read the
-whole file with `read_object`, or give the user a link with
-`create_object_download_url`. From a shell:
+An image comes back as image content, and audio as audio content. A PDF or
+another file comes back as an embedded resource. A part past the inline limit
+of the call comes back as a link.
+
+The result `span` can use a different unit from the span you sent. For
+example, the text of pages comes back as `chars` with `pages`. A span that
+cannot be read has an `error` on its own result, and the other spans still
+read. A large span comes back in parts. To read on, send `next` to
+`read_spans` until `next` is null. Read the whole file with `read_object`, or
+give the user a link with `create_object_download_url`. From a shell:
 
 ```bash
 graphon search <bucket> "ERR_POOL_TIMEOUT" --mode keyword --limit 20
-graphon search <bucket> "connection pool exhausted" --unit passage
-graphon read-span <bucket> <key> --version-id <versionId> --unit chars --start 1200 --end 3400 --representation text
+graphon search <bucket> "connection pool exhausted" --result-type passage
+graphon read-spans <bucket> <key> --version-id <versionId> --unit chars --start 1200 --end 3400
+graphon read-spans <bucket> --spans spans.json --include text raw
 ```
 
 ## Answers and chat
