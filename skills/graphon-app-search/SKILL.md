@@ -119,9 +119,12 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 
 | Route | Body | Returns |
 | --- | --- | --- |
-| `POST /search` | `bucketId`, `query`, `mode`, `resultType`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
-| `POST /answer` | `bucketId`, `query`, `history`, `image`, `keys`, `keyPrefix` | 200 with one answer with `[[SRC:0001]]` markers and its sources |
-| `POST /research` | `bucketId`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
+| `POST /search` | `target`, `query`, `mode`, `resultType`, `limit`, `cursor`, `keys`, `keyPrefix` | Ranked results, each with a key, a version, and the places that matched |
+| `POST /answer` | `target`, `query`, `history`, `image`, `keys`, `keyPrefix` | 200 with one answer with `[[SRC:0001]]` markers and its sources |
+| `POST /research` | `target`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
+
+`target` is the bucket id (`bkt…`). To query a dataset that Graphon curates,
+send its dataset id (`dst…`) in the same field.
 
 ## A search endpoint
 
@@ -187,7 +190,7 @@ tenant's file. Keep tenants apart:
 - Put the tenant in the key, and one bucket per tenant where the data must
   never mix.
 - Filter the results by key prefix on the server, before they reach the user.
-- Never take `bucketId` from the browser. The server decides which bucket the
+- Never take `target` from the browser. The server decides which bucket the
   signed-in user may read.
 
 ## Recipes

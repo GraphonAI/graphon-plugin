@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   const user = await requireUser();
   const { query, cursor } = (await request.json()) as { query: string; cursor?: string };
   const body = await graphon<SearchResponse>('search', {
-    bucketId: BUCKET_ID,
+    target: BUCKET_ID,
     query,
     mode: 'hybrid',
     limit: 10,
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   await requireUser();
   const { query, history } = (await request.json()) as { query: string; history: Turn[] };
   const body = await graphon<AnswerResponse>('answer', {
-    bucketId: BUCKET_ID,
+    target: BUCKET_ID,
     query,
     // Oldest first, at most 32 turns. Graphon stores none of them.
     history: history.slice(-32),

@@ -8,6 +8,14 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 4.0.0
+
+- The query tools (`search_objects`, `answer_question`, `read_spans`, and
+  `start_research`) take `target` in place of `bucket`, and their HTTP routes
+  take `target` in place of `bucketId`. The tools take a bucket name, a bucket
+  id, or a dataset id. The routes take a bucket id or a dataset id. The search
+  skills teach `target`.
+
 ## 3.0.0
 
 - `read_spans` replaces `read_span`, and `graphon read-spans` replaces

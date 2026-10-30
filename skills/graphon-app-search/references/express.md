@@ -10,7 +10,7 @@ export const router = express.Router();
 
 router.post('/search', requireUser, async (req, res) => {
   const body = await graphon('search', {
-    bucketId: BUCKET_ID,
+    target: BUCKET_ID,
     query: req.body.query,
     mode: 'hybrid',
     limit: 10,
@@ -27,7 +27,7 @@ router.post('/search', requireUser, async (req, res) => {
 router.post('/ask', requireUser, async (req, res) => {
   const turns = await conversations.turns(req.body.conversationId);
   const body = await graphon('answer', {
-    bucketId: BUCKET_ID,
+    target: BUCKET_ID,
     query: req.body.question,
     // Oldest first, at most 32 turns. Graphon stores none of them.
     history: turns.slice(-32),
@@ -42,7 +42,7 @@ router.post('/ask', requireUser, async (req, res) => {
 
 ## Never take the bucket from the browser
 
-`bucketId` comes from the server's configuration or from the signed-in user's
+`target` comes from the server's configuration or from the signed-in user's
 record. A bucket id in the request body lets one user read another tenant's
 files.
 

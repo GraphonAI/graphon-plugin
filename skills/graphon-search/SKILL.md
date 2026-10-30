@@ -63,9 +63,15 @@ forward, that is a stop: say so and end your turn.
 - Guess at an environment variable, a flag, or a config path that this skill
   does not name. If the skill does not name it, it does not exist.
 
-A bucket with indexing enabled can be read three ways. Each call names one
-bucket, and Graphon reads the whole bucket unless the call scopes it with
-`keys` or `keyPrefix`.
+A bucket with indexing enabled can be read three ways. So can a dataset: a
+read-only set of documents that Graphon curates. Each call names one target,
+and Graphon reads the whole target unless the call scopes it with `keys` or
+`keyPrefix`.
+
+- The MCP tools take `target`: the bucket name, the bucket id (`bkt…`), or a
+  dataset id (`dst…`) from `list_datasets`.
+- The CLI takes a bucket name or a dataset id as its first argument.
+- The HTTP routes take `target`: a bucket id or a dataset id.
 
 ## Choose the operation
 
@@ -98,7 +104,7 @@ new version of a file indexes, its older version still answers.
 
 ## Search
 
-`search_objects` takes the bucket, the text, and four options:
+`search_objects` takes the target, the text, and these options:
 
 | Option       | Values                               | Use                                                                                                               |
 | ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
@@ -135,8 +141,10 @@ The result `span` can use a different unit from the span you sent. For
 example, the text of pages comes back as `chars` with `pages`. A span that
 cannot be read has an `error` on its own result, and the other spans still
 read. A large span comes back in parts. To read on, send `next` to
-`read_spans` until `next` is null. Read the whole file with `read_object`, or
-give the user a link with `create_object_download_url`. From a shell:
+`read_spans` until `next` is null. Read the whole file of a bucket with
+`read_object`, or give the user a link with `create_object_download_url`.
+These tools do not take a dataset id. Read the whole document of a dataset
+with `read_spans` and `object` in `include`. From a shell:
 
 ```bash
 graphon search <bucket> "ERR_POOL_TIMEOUT" --mode keyword --limit 20
@@ -174,8 +182,8 @@ run it for a user, because it reads a terminal and a pipe the same way.
 
 ## Research
 
-`start_research` researches one bucket in depth. It searches, reads, then
-searches again inside the bucket with what it learned. It takes no mode.
+`start_research` researches one target in depth. It searches, reads, then
+searches again inside the target with what it learned. It takes no mode.
 Research is premium.
 
 A question that asks for every match, such as "find all the incidents" or
@@ -203,7 +211,8 @@ Register only a URL that the user gave you.
 
 ## Report
 
-Say which bucket you read, which operation you used, and what it cost in time.
+Say which bucket or dataset you read, which operation you used, and what it
+cost in time.
 List each source by key, with its page or time range. When a warning came
 back, give it to the user in plain words, with the next step.
 

@@ -42,7 +42,7 @@ router = APIRouter()
 async def search(query: str, cursor: str | None = None, user=Depends(current_user)):
     body = await call(
         "search",
-        {"bucketId": BUCKET_ID, "query": query, "mode": "hybrid", "limit": 10}
+        {"target": BUCKET_ID, "query": query, "mode": "hybrid", "limit": 10}
         | ({"cursor": cursor} if cursor else {}),
     )
     # Graphon answers from the whole bucket. Keep this tenant's keys only.
@@ -56,7 +56,7 @@ async def ask(question: str, history: list[dict], user=Depends(current_user)):
     body = await call(
         "answer",
         # Oldest first, at most 32 turns. Graphon stores none of them.
-        {"bucketId": BUCKET_ID, "query": question, "history": history[-32:]},
+        {"target": BUCKET_ID, "query": question, "history": history[-32:]},
     )
     return {
         "answer": body["answer"],
@@ -70,7 +70,7 @@ async def ask(question: str, history: list[dict], user=Depends(current_user)):
 ```python
 @router.post("/research")
 async def start_research(question: str, user=Depends(current_user)):
-    body = await call("research", {"bucketId": BUCKET_ID, "query": question})
+    body = await call("research", {"target": BUCKET_ID, "query": question})
     return {"researchId": body["research"]["id"]}
 ```
 
