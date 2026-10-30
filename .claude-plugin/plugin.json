@@ -1,7 +1,7 @@
 {
   "name": "graphon",
   "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "author": {
     "name": "Graphon",
     "url": "https://graphon.ai"

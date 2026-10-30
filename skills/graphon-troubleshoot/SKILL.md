@@ -92,8 +92,20 @@ with the same inputs, and do not widen a role to make an error go away.
 | `bucket_not_ready` | The bucket is still being created | Call `get_bucket` until its phase is `active` |
 | `bucket_offline` | An editor took the bucket offline | An editor must bring it online first |
 | `feature_not_in_plan` | Research and image questions are premium | Tell the user which feature the workspace plan lacks |
+| `dataset_access_required` (403) | The dataset is paid, and this workspace has no access. `list_datasets` shows its `access.state` as `locked`. | Tell the user. Do not retry. |
+| `not_found` for a dataset id | The id is wrong, or the dataset left the catalog | Call `list_datasets` and use an id from it |
+| `temporarily_unavailable` (503) | The index is busy, or a dataset is not available for a short time | Wait `details.retryAfterSeconds`, then send the same request again |
 | `not_found` from `get_research` or `graphon research get` | The run is past its `expiresAt` | A finished run is readable until `expiresAt`. Start the run again. |
 | `graphon search`, `graphon ask`, or `graphon research start` exits 1 with an indexing message | The bucket cannot answer yet | The message names the next command. Run it, then ask again. |
+
+`read_spans` and `graphon read-spans` put the error of one span on that
+span's result. The other spans still read.
+
+- `not_found`: the version is gone, or it is not in that target.
+- `invalid_span`: the span does not fit the object. Send spans unchanged, as
+  search, an answer, or a run returned them.
+- `content_unavailable`: the content is not stored or cannot be read. Upload
+  the object again, then read a span from a new search.
 
 A search with a warning returns no results, and it is not an error:
 

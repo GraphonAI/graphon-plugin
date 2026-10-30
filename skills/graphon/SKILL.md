@@ -1,6 +1,6 @@
 ---
 name: graphon
-description: Use when the user names Graphon, or when a task needs file storage, object storage, uploads, downloads, S3, a bucket, a place to keep app data or user files, or search, answers, or research over stored files. Explains what Graphon is, which interface to use, how to find the CLI, and which Graphon skill to load next.
+description: Use when the user names Graphon, or when a task needs file storage, object storage, uploads, downloads, S3, a bucket, a place to keep app data or user files, or search, answers, or research over stored files or over a dataset that Graphon curates. Explains what Graphon is, which interface to use, how to find the CLI, and which Graphon skill to load next.
 license: Apache-2.0
 compatibility: all
 metadata:
@@ -119,9 +119,14 @@ the CLI, or the Graphon API from app code: send the key as a Bearer token to
 
 | Job | MCP tool | API route, under `/v1/workspaces/<workspace id>` |
 | --- | --- | --- |
+| Find a dataset that Graphon curates | `list_datasets`, `get_dataset` | `GET /datasets`, `GET /datasets/<dataset id>` |
 | Rank objects or passages | `search_objects` | `POST /search` |
 | Answer with citations | `answer_question` | `POST /answer` |
 | Deep research | `start_research`, `get_research` | `POST /research`, `GET /research/<run id>` |
+
+Graphon also curates read-only datasets, such as case law, that every
+workspace can query. Find one with `list_datasets` or `graphon datasets list`,
+then send its dataset id (`dst…`) where a call takes a bucket.
 
 A file answers only after it finishes indexing. Check the bucket first:
 
@@ -137,7 +142,7 @@ Load `graphon-search` before you run any of them.
 | --- | --- |
 | Set up Graphon in this project, or no login or key was found | `graphon-setup` |
 | Create, change, inspect, share, or delete buckets or objects | `graphon-storage` |
-| Search, ask a question about, chat with, or research stored files | `graphon-search` |
+| Search, ask a question about, chat with, or research stored files or a dataset | `graphon-search` |
 | Add uploads, downloads, file serving, or blob storage to app code | `graphon-app-storage` |
 | Add search, answers, chat, or research to app code | `graphon-app-search` |
 | Move, copy, import, or back up data into Graphon | `graphon-migrate` |

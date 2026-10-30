@@ -1,6 +1,6 @@
 ---
 name: graphon-search
-description: Use when a task searches, queries, asks a question about, chats with, or researches files that are stored in Graphon, or when the user wants to find a document, get an answer with citations, or run deep research over a bucket. Covers search, answers, chat turns, research runs, and the index states that decide what a bucket can answer.
+description: Use when a task searches, queries, asks a question about, chats with, or researches files that are stored in Graphon, or when the user wants to find a document, get an answer with citations, or run deep research over a bucket. Also use it for the datasets that Graphon curates. Covers finding a dataset, search, answers, chat turns, research runs, and the index states that decide what a bucket can answer.
 license: Apache-2.0
 compatibility: all
 metadata:
@@ -72,6 +72,24 @@ and Graphon reads the whole target unless the call scopes it with `keys` or
   dataset id (`dst…`) from `list_datasets`.
 - The CLI takes a bucket name or a dataset id as its first argument.
 - The HTTP routes take `target`: a bucket id or a dataset id.
+
+## Find a dataset
+
+| Interface | List the datasets                            | Read one dataset                                                  |
+| --------- | -------------------------------------------- | ----------------------------------------------------------------- |
+| MCP       | `list_datasets`, with `category` or `q`      | `get_dataset`, with the dataset id or its slug                    |
+| CLI       | `graphon datasets list --category legal`     | `graphon datasets get <dataset id or slug>`                       |
+| HTTP      | `GET /v1/workspaces/<workspace id>/datasets` | `GET /v1/workspaces/<workspace id>/datasets/<dataset id or slug>` |
+
+Each dataset has an `id` to send as the target, its `examples` (questions it
+answers well), and `access.state` for this workspace:
+
+- `open`: the dataset is free. Query it.
+- `subscribed`: the dataset is paid, and this workspace has access. Query it.
+- `locked`: the dataset is paid, and this workspace has no access. A query
+  returns 403 `dataset_access_required`. Tell the user, and do not retry.
+
+A dataset is read-only. Nothing uploads to it, and it needs no index check.
 
 ## Choose the operation
 

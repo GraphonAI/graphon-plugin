@@ -8,6 +8,17 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 4.1.0
+
+- The search skill teaches how to find a dataset that Graphon curates:
+  `list_datasets` and `get_dataset`, `graphon datasets list` and
+  `graphon datasets get`, and `GET /datasets`. It explains `access.state`.
+- The entry skill names datasets, so a question about a dataset loads the
+  search skill.
+- The troubleshooting skill covers `dataset_access_required`, a `not_found`
+  dataset id, `temporarily_unavailable`, and the errors that `read_spans`
+  puts on one span: `not_found`, `invalid_span`, and `content_unavailable`.
+
 ## 4.0.0
 
 - The query tools (`search_objects`, `answer_question`, `read_spans`, and

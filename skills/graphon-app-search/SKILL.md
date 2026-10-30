@@ -124,7 +124,10 @@ export async function graphon<T>(route: string, body: unknown): Promise<T> {
 | `POST /research` | `target`, `query`, `history`, `keys`, `keyPrefix` | A run id at once. Read its events, then its answer. |
 
 `target` is the bucket id (`bkt…`). To query a dataset that Graphon curates,
-send its dataset id (`dst…`) in the same field.
+send its dataset id (`dst…`) in the same field. `GET /datasets` lists the
+datasets, each with its `id` and its `access.state` for the workspace. A
+dataset document has no download link: read it with `POST /read-spans` and
+`object` in `include`.
 
 ## A search endpoint
 
