@@ -8,6 +8,13 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 4.1.1
+
+- The troubleshooting skill covers the plan caps: `plan_limit_reached` for
+  monthly queries and users, and `QuotaExceeded` for a write to a workspace
+  whose storage is full. It drops `storage_quota_exceeded`, which Graphon no
+  longer returns.
+
 ## 4.1.0
 
 - The search skill teaches how to find a dataset that Graphon curates:

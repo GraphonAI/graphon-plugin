@@ -79,7 +79,7 @@ with the same inputs, and do not widen a role to make an error go away.
 | `request_too_large` | The request body passed 2 MiB | Use `create_object_upload_url` instead of `write_object` |
 | `content_too_large`, `entity_too_large` | The object passed the inline 1 MiB limit | Use `create_object_upload_url` |
 | `object_locked` | Retention still covers the object | Report the keys. Retention cannot be bypassed. |
-| `storage_quota_exceeded` | The workspace allowance is used up | Report the last key written. The user raises the allowance, then the same command restarts. |
+| `QuotaExceeded` | The workspace stores twice its plan's storage limit, so writes are refused | Report the last key written. The user deletes objects or an Admin upgrades the plan, then the same command restarts. Reads, lists, and deletes still work. |
 | `rate_limited` | Over 300 tool calls per minute | Wait, then batch the work. Do not loop faster. |
 
 ## Search, answer, and research errors
@@ -92,6 +92,7 @@ with the same inputs, and do not widen a role to make an error go away.
 | `bucket_not_ready` | The bucket is still being created | Call `get_bucket` until its phase is `active` |
 | `bucket_offline` | An editor took the bucket offline | An editor must bring it online first |
 | `feature_not_in_plan` | Research and image questions are premium | Tell the user which feature the workspace plan lacks |
+| `plan_limit_reached` (403) | The workspace ran twice its monthly query limit (`details.limit` is `queriesPerMonth`), or an invitation would pass its users limit (no `details`) | Tell the user. An Admin can upgrade the plan. For queries, `details.resetsAt` says when they resume. Do not retry. |
 | `dataset_access_required` (403) | The dataset is paid, and this workspace has no access. `list_datasets` shows its `access.state` as `locked`. | Tell the user. Do not retry. |
 | `not_found` for a dataset id | The id is wrong, or the dataset left the catalog | Call `list_datasets` and use an id from it |
 | `temporarily_unavailable` (503) | The index is busy, or a dataset is not available for a short time | Wait `details.retryAfterSeconds`, then send the same request again |
@@ -136,6 +137,7 @@ environment, and whether a login is stored, and it makes no network call.
 | 403 on a presigned URL | The URL expired | Sign a new one per request. Do not cache or commit a signed URL. |
 | 403 with a correct key | The clock is off | Check the system clock. More than 15 minutes of skew fails every signature. |
 | 401, or 403 `SignatureDoesNotMatch`, after the key went into a secret manager | The stored key ends in a newline | Store it again through `tr -d '\n'`. See `graphon-setup`. |
+| 403 `QuotaExceeded` on a write | The workspace stores twice its plan's storage limit | Delete objects or ask an Admin to upgrade the plan. Reads, lists, and deletes still work. Do not retry the write in a loop. |
 | 404 | The bucket or key does not exist | A key is case-sensitive and has no leading slash |
 | 501 `NotImplemented` | The operation is not available | See below |
 
