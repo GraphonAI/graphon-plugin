@@ -8,6 +8,15 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 4.2.0
+
+- The storage skill teaches the new empty job: `empty_bucket` returns a job
+  at once, and `get_job` reports `progress` and the retained keys in
+  `result.retained`. It teaches `delete_objects` for up to 1000 keys in one
+  call, and the bucket recovery window: a deleted bucket stays restorable
+  until `recoverableUntil`, `list_buckets` with `state=deleted` finds it,
+  and `restore_bucket` brings it back.
+
 ## 4.1.1
 
 - The troubleshooting skill covers the plan caps: `plan_limit_reached` for

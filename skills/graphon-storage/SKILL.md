@@ -65,15 +65,15 @@ forward, that is a stop: say so and end your turn.
 
 ## Pick the interface
 
-| Job | Use |
-| --- | --- |
-| Create, list, inspect, or change a bucket | MCP tools |
-| Write content you generated, up to 1 MiB | `write_object` |
-| Upload a file from disk | the CLI, or `create_object_upload_url` |
-| Upload a folder | `graphon objects sync` |
-| Download a file to disk | the CLI, or `create_object_download_url` |
-| Read a file into the conversation | `read_object` |
-| Give a browser or another service a direct link | a presigned URL |
+| Job                                             | Use                                      |
+| ----------------------------------------------- | ---------------------------------------- |
+| Create, list, inspect, or change a bucket       | MCP tools                                |
+| Write content you generated, up to 1 MiB        | `write_object`                           |
+| Upload a file from disk                         | the CLI, or `create_object_upload_url`   |
+| Upload a folder                                 | `graphon objects sync`                   |
+| Download a file to disk                         | the CLI, or `create_object_download_url` |
+| Read a file into the conversation               | `read_object`                            |
+| Give a browser or another service a direct link | a presigned URL                          |
 
 ## Bucket names
 
@@ -90,13 +90,13 @@ objects.
 
 A new bucket is **private** and has **indexing enabled**.
 
-| Setting | Meaning | Change it when |
-| --- | --- | --- |
-| Indexing | Graphon indexes each object so that search, answers, and research can use it | Keep it on. Turn it off only when the user asks for storage only. It is fixed when the bucket is created. |
-| Private read | Only a key or a presigned URL reads an object | The default. Keep it. |
-| Public read | Anyone with the URL reads an object | The user asked for a public asset host, and said so in this session |
-| Versioning | A write keeps the old version | The user wants undo, or an audit trail |
-| Retention | An object cannot be deleted for a set time | The user named a compliance rule |
+| Setting      | Meaning                                                                      | Change it when                                                                                            |
+| ------------ | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Indexing     | Graphon indexes each object so that search, answers, and research can use it | Keep it on. Turn it off only when the user asks for storage only. It is fixed when the bucket is created. |
+| Private read | Only a key or a presigned URL reads an object                                | The default. Keep it.                                                                                     |
+| Public read  | Anyone with the URL reads an object                                          | The user asked for a public asset host, and said so in this session                                       |
+| Versioning   | A write keeps the old version                                                | The user wants undo, or an audit trail                                                                    |
+| Retention    | An object cannot be deleted for a set time                                   | The user named a compliance rule                                                                          |
 
 Indexing cannot be turned on later. To search a bucket made without it, copy
 its objects into a new bucket.
@@ -176,9 +176,19 @@ graphon buckets empty <name> --confirm-name <name>
 graphon buckets delete <name> --confirm-name <name>
 ```
 
+`empty_bucket` starts a job and returns it at once. Poll `get_job` until its
+`status` is `succeeded` or `failed`. The job `progress` counts the deleted
+objects. An object under retention is not emptied; the job `result.retained`
+lists those keys with their `retainUntil` date. The CLI waits for the job.
+
+`delete_objects` deletes up to 1000 keys in one call, with one result per
+key. Use it instead of many `delete_object` calls.
+
 A bucket must be empty before it can be deleted. A deleted bucket stays
-restorable for seven days. An object under retention is not emptied, and the
-call returns `object_locked` with the keys that stayed.
+restorable until its `recoverableUntil`: the bucket policy `softDeleteDays`,
+seven days by default. `list_buckets` with `state=deleted` finds it, and
+`restore_bucket` brings it back. After that date the name is free again and
+the storage is gone for good.
 
 ## Report
 
