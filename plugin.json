@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "graphon",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
   "author": {
     "name": "Graphon",
@@ -20,7 +20,7 @@
     "retrieval",
     "citations"
   ],
-  "homepage": "https://docs.beta.graphon.ai/plugin",
+  "homepage": "https://docs.graphon.ai/plugin",
   "repository": "https://github.com/GraphonAI/graphon-plugin",
   "extensions": {
     "com.openai": {
@@ -36,7 +36,7 @@
           "Ask my Graphon bucket why checkout stalled last week."
         ],
         "brandColor": "#1F6FEB",
-        "websiteURL": "https://docs.beta.graphon.ai/plugin"
+        "websiteURL": "https://docs.graphon.ai/plugin"
       }
     }
   }

@@ -18,7 +18,7 @@ STORAGES = {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             "bucket_name": os.environ["GRAPHON_BUCKET"],
-            "endpoint_url": "https://" + GRAPHON_WORKSPACE_ID + ".storage.beta.graphon.sh",
+            "endpoint_url": "https://" + GRAPHON_WORKSPACE_ID + ".storage.graphon.sh",
             "region_name": "us-east-1",
             "addressing_style": "path",
             "signature_version": "s3v4",

@@ -8,6 +8,14 @@ This plugin carries its own semver, separate from any Graphon service release.
 - **Patch** — a fix to skill text, a manifest, or the hook, with no behavior
   change for a reader who already followed the skill.
 
+## 4.2.1
+
+- The plugin names Graphon's new domains: the MCP server at
+  `https://api.graphon.ai/mcp`, the docs at `https://docs.graphon.ai`, the
+  installer at `https://get.graphon.ai`, and S3 at
+  `https://{workspaceId}.storage.graphon.sh`. The old names still work for
+  now, so an installed plugin keeps working until it updates.
+
 ## 4.2.0
 
 - The storage skill teaches the new empty job: `empty_bucket` returns a job

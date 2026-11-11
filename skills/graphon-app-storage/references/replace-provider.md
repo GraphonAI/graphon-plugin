@@ -9,7 +9,7 @@ use an S3 client. Change four things and keep the rest:
 
 | Setting | New value |
 | --- | --- |
-| endpoint | `https://<workspace id>.storage.beta.graphon.sh`, with the ID from `graphon workspaces get` |
+| endpoint | `https://<workspace id>.storage.graphon.sh`, with the ID from `graphon workspaces get` |
 | region | `us-east-1` |
 | path-style addressing | on |
 | credentials | the access key ID and the key, from `GRAPHON_API_KEY` in the app's secrets |

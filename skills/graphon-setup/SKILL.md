@@ -72,7 +72,7 @@ Run `graphon --version`. If that fails, use `~/.local/bin/graphon` for every
 command below. If that also fails, run the install **once**:
 
 ```bash
-curl -fsSL https://beta.graphon.ai/install.sh | sh -s -- --no-modify-path --quiet
+curl -fsSL https://get.graphon.ai/install.sh | sh -s -- --no-modify-path --quiet
 ```
 
 Check `~/.local/bin/graphon --version` again. If it still fails, **stop**.

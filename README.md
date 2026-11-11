@@ -15,7 +15,7 @@ This plugin gives your agent three things:
   and search on Graphon, search and question your files, move data in, and run
   day-to-day storage work.
 
-Version 4.2.0. MCP server: `https://api.beta.graphon.ai/mcp`.
+Version 4.2.1. MCP server: `https://api.graphon.ai/mcp`.
 
 ## Install
 
@@ -42,7 +42,7 @@ npx skills add GraphonAI/graphon-plugin
 | Gemini CLI | Blocked upstream | `gemini extensions install https://github.com/GraphonAI/graphon-plugin --consent`<br>Gemini Code Assist no longer signs in individual accounts, so the extension installs but cannot connect. Skills still work through `npx skills add`. |
 | Antigravity IDE | Verified | `npx skills add GraphonAI/graphon-plugin`<br>Copy mcp/antigravity.json to ~/.codeium/antigravity/mcp_config.json, restart, then sign the server in from the MCP panel: Antigravity does not prompt for that on its own. The tools work once signed in. The skills load but this agent does not reliably follow their stop rules, so approve its commands one at a time. The Antigravity CLI does not surface MCP tools yet. |
 | Copilot CLI | Verified | `copilot plugin marketplace add GraphonAI/graphon-plugin`<br>`copilot plugin install graphon@graphon`<br>If MCP tools are missing, your organization may block third-party MCP servers. Check github.com/settings/copilot. The skills work either way. |
-| Another agent | Should work | `npx plugins add GraphonAI/graphon-plugin`<br>`npx add-mcp https://api.beta.graphon.ai/mcp -g --name graphon` |
+| Another agent | Should work | `npx plugins add GraphonAI/graphon-plugin`<br>`npx add-mcp https://api.graphon.ai/mcp -g --name graphon` |
 
 **Verified** means a real session connected, called a tool, and the call
 was recorded. **Should work** means the manifest ships and validates, but
@@ -98,7 +98,7 @@ exact delete.
 
 ## Links
 
-- Documentation: https://docs.beta.graphon.ai/plugin
+- Documentation: https://docs.graphon.ai/plugin
 - Issues: https://github.com/GraphonAI/graphon-plugin/issues
 - Security: see `SECURITY.md`
 

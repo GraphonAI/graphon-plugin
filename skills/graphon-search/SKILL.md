@@ -236,9 +236,9 @@ back, give it to the user in plain words, with the next step.
 
 Read the reference before you write app code against these routes:
 
-- `https://docs.beta.graphon.ai/api/search/search-objects.md`
-- `https://docs.beta.graphon.ai/api/answer/answer-question.md`
-- `https://docs.beta.graphon.ai/api/research/start-research.md`
+- `https://docs.graphon.ai/api/search/search-objects.md`
+- `https://docs.graphon.ai/api/answer/answer-question.md`
+- `https://docs.graphon.ai/api/research/start-research.md`
 
 To put search, answers, or chat into the user's own app, load
 `graphon-app-search`.

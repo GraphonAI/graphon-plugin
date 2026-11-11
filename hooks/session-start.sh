@@ -16,7 +16,7 @@ set -u
 # writes to stderr on a bad status, and an agent surfaces stderr, so the
 # install attempt swallows both streams.
 if ! "$HOME/.local/bin/graphon" --version >/dev/null 2>&1; then
-  curl -fsSL 'https://beta.graphon.ai/install.sh' 2>/dev/null | sh -s -- --no-modify-path --quiet 2>/dev/null
+  curl -fsSL 'https://get.graphon.ai/install.sh' 2>/dev/null | sh -s -- --no-modify-path --quiet 2>/dev/null
 fi
 
 # Claude Code reads this file to build the session PATH. Other agents do not

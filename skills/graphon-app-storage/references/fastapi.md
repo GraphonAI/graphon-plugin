@@ -15,7 +15,7 @@ WORKSPACE_ID = "<workspace id>"
 
 graphon = boto3.client(
     "s3",
-    endpoint_url="https://" + WORKSPACE_ID + ".storage.beta.graphon.sh",
+    endpoint_url="https://" + WORKSPACE_ID + ".storage.graphon.sh",
     region_name="us-east-1",
     # The access key ID is between the "_" and the ".".
     aws_access_key_id=key.split("_", 1)[1].split(".")[0],

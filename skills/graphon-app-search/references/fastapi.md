@@ -8,7 +8,7 @@ import os
 import httpx
 
 WORKSPACE_ID = "<workspace id>"
-BASE = f"https://api.beta.graphon.ai/v1/workspaces/{WORKSPACE_ID}"
+BASE = f"https://api.graphon.ai/v1/workspaces/{WORKSPACE_ID}"
 BUCKET_ID = os.environ["GRAPHON_BUCKET_ID"]
 
 client = httpx.AsyncClient(

@@ -1,11 +1,11 @@
 {
   "name": "graphon",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Object storage with search your coding agent can set up, fill, query, and wire into your app.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
     "graphon": {
-      "httpUrl": "https://api.beta.graphon.ai/mcp",
+      "httpUrl": "https://api.graphon.ai/mcp",
       "headers": {
         "x-graphon-surface": "plugin"
       }

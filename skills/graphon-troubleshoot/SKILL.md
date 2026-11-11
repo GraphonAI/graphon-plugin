@@ -132,7 +132,7 @@ environment, and whether a login is stored, and it makes no network call.
 
 | Status | Cause | Fix |
 | --- | --- | --- |
-| Any error from `https://storage.beta.graphon.sh` | The bare storage host serves only the JSON API | Use the workspace host, `https://<workspace id>.storage.beta.graphon.sh`, with the ID from `graphon workspaces get` |
+| Any error from `https://storage.graphon.sh` | The bare storage host serves only the JSON API | Use the workspace host, `https://<workspace id>.storage.graphon.sh`, with the ID from `graphon workspaces get` |
 | 403 `SignatureDoesNotMatch` | Wrong credentials or wrong signing settings | Set `region` to `us-east-1`, turn on path-style addressing, and use SigV4. The access key ID is the part of the key between the `_` and the `.`. The whole key is the secret. |
 | 403 on a presigned URL | The URL expired | Sign a new one per request. Do not cache or commit a signed URL. |
 | 403 with a correct key | The clock is off | Check the system clock. More than 15 minutes of skew fails every signature. |

@@ -15,11 +15,11 @@ that owns the buckets. A bucket with indexing enabled can also be searched.
 
 Graphon serves three APIs:
 
-- The S3 API, on the workspace host `https://<workspace id>.storage.beta.graphon.sh`.
+- The S3 API, on the workspace host `https://<workspace id>.storage.graphon.sh`.
   Use it from any S3 SDK or tool.
-- The JSON storage API, on `https://storage.beta.graphon.sh`. It does not answer S3
+- The JSON storage API, on `https://storage.graphon.sh`. It does not answer S3
   requests.
-- The Graphon API, on `https://api.beta.graphon.ai`. It serves search, answers, research,
+- The Graphon API, on `https://api.graphon.ai`. It serves search, answers, research,
   API keys, and members.
 
 ## Choose the interface first
@@ -95,7 +95,7 @@ and use that full path for every later call.
 If both fail, run the install **once**:
 
 ```bash
-curl -fsSL https://beta.graphon.ai/install.sh | sh -s -- --no-modify-path --quiet
+curl -fsSL https://get.graphon.ai/install.sh | sh -s -- --no-modify-path --quiet
 ```
 
 Then run `~/.local/bin/graphon --version` again. If it still fails, stop. Tell
@@ -115,7 +115,7 @@ anywhere else: the CLI already keeps it.
 
 A bucket with indexing enabled can be read three ways. Use the MCP tools, or
 the CLI, or the Graphon API from app code: send the key as a Bearer token to
-`https://api.beta.graphon.ai`. A viewer key is enough.
+`https://api.graphon.ai`. A viewer key is enough.
 
 | Job | MCP tool | API route, under `/v1/workspaces/<workspace id>` |
 | --- | --- | --- |

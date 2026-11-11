@@ -2,7 +2,7 @@
   "mcpServers": {
     "graphon": {
       "type": "http",
-      "url": "https://api.beta.graphon.ai/mcp",
+      "url": "https://api.graphon.ai/mcp",
       "headers": {
         "x-graphon-surface": "plugin"
       }

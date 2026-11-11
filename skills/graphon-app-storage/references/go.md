@@ -26,7 +26,7 @@ func New(ctx context.Context) *s3.Client {
 	// The access key ID is between the "_" and the ".".
 	id := key[strings.Index(key, "_")+1 : strings.Index(key, ".")]
 	return s3.New(s3.Options{
-		BaseEndpoint: aws.String("https://" + workspaceID + ".storage.beta.graphon.sh"),
+		BaseEndpoint: aws.String("https://" + workspaceID + ".storage.graphon.sh"),
 		Region:       "us-east-1",
 		UsePathStyle: true,
 		Credentials:  credentials.NewStaticCredentialsProvider(id, key, ""),

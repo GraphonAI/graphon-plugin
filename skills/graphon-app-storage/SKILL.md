@@ -95,8 +95,8 @@ Everything else is a constant in the app's code. None of it is a secret:
 | Value | Where it comes from |
 | --- | --- |
 | Workspace ID | `graphon workspaces get` |
-| S3 endpoint | `https://<workspace id>.storage.beta.graphon.sh` |
-| Graphon API origin, for search | `https://api.beta.graphon.ai` |
+| S3 endpoint | `https://<workspace id>.storage.graphon.sh` |
+| Graphon API origin, for search | `https://api.graphon.ai` |
 
 Never inline a key. Never send a key to the browser. One key per environment,
 with the lowest role that works.
@@ -106,7 +106,7 @@ with the lowest role that works.
 Graphon speaks S3. Use the standard SDK for the language. Four settings are
 not optional:
 
-- The endpoint is the workspace host. The bare `https://storage.beta.graphon.sh`
+- The endpoint is the workspace host. The bare `https://storage.graphon.sh`
   serves only the JSON API, so an S3 request there fails.
 - `region` is `us-east-1`.
 - Path-style addressing is on.
@@ -119,13 +119,13 @@ import { S3Client } from '@aws-sdk/client-s3';
 
 // From `graphon workspaces get`.
 const WORKSPACE_ID = '<workspace id>';
-export const GRAPHON_API = 'https://api.beta.graphon.ai';
+export const GRAPHON_API = 'https://api.graphon.ai';
 
 const key = process.env.GRAPHON_API_KEY!;
 export const BUCKET = process.env.GRAPHON_BUCKET!;
 
 export const graphon = new S3Client({
-  endpoint: `https://${WORKSPACE_ID}.storage.beta.graphon.sh`,
+  endpoint: `https://${WORKSPACE_ID}.storage.graphon.sh`,
   region: 'us-east-1',
   forcePathStyle: true,
   credentials: {

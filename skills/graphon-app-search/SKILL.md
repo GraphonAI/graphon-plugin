@@ -85,7 +85,7 @@ HTTPS request for each question.
 | `GRAPHON_API_KEY` | `graphon-setup` puts it where the app keeps its secrets | Yes |
 | `GRAPHON_BUCKET_ID` | `graphon buckets get <bucket>` | No |
 | Workspace id | `graphon workspaces get` | No |
-| API origin | `https://api.beta.graphon.ai` | No |
+| API origin | `https://api.graphon.ai` | No |
 
 A `viewer` key is enough for all three operations. Never send the key to the
 browser. Every call goes from the app's server.
@@ -95,7 +95,7 @@ browser. Every call goes from the app's server.
 ```ts
 // lib/graphon-search.ts. Only the key is a secret.
 const WORKSPACE_ID = '<workspace id>';
-const BASE = `https://api.beta.graphon.ai/v1/workspaces/${WORKSPACE_ID}`;
+const BASE = `https://api.graphon.ai/v1/workspaces/${WORKSPACE_ID}`;
 
 export const BUCKET_ID = process.env.GRAPHON_BUCKET_ID!;
 
